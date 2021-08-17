@@ -21,9 +21,9 @@ import Signup from "./pages/signup";
 function App() {
     return (
         <>
-        <GlobalStyle />
-        <Header />
         <Router>
+            <GlobalStyle />
+            <Header />
             <Switch>
                 <Route path='/' component={Main} exact/>
                 <Route path='/signin' component={Signin} exact/>

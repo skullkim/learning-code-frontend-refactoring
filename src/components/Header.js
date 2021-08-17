@@ -1,4 +1,5 @@
 /* eslint-disable */
+import axios from 'axios';
 import styled from 'styled-components';
 import {useEffect, useState} from 'react';
 import {AiOutlineUnorderedList} from 'react-icons/ai';
@@ -33,6 +34,12 @@ const NavBox = styled.nav`
 
 const Header = () => {
    const [headerInfo, setHeaderInfo] = useState({});
+   useEffect(() => {
+     axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
+        .then(({data: {data}}) => setHeaderInfo(data))
+        .catch(err => err);
+   }, [])
+  console.log(headerInfo);
     return (
       <HeaderBox>
         <Link to='/letters'><LinkToLetters /></Link>

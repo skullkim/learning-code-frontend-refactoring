@@ -1,5 +1,5 @@
 const EditPosting = () => {
-  return (<div>edit posting</div>)
+    return (<div>edit posting</div>)
 }
 
 export default EditPosting;

@@ -1,5 +1,5 @@
 const Posting = () => {
-  return (<div>posting</div>)
+    return (<div>posting</div>)
 }
 
 export default Posting;

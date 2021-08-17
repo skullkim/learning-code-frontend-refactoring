@@ -37,7 +37,7 @@ function App() {
                 <Route path='/user/:userId/posting' component={Posting} exact/>
                 <Route path='/user/:userId/posting/:postingId' component={EditPosting} exact/>
                 <Route path='/user/:userId/password' component={UserPassword} exact />
-                <Route path='/search/:category/:target' component={SearchResult} />
+                <Route path='/search/:category' component={SearchResult} />
                 <Route component={NotFound}/>
             </Switch>
         </Router>

@@ -1,9 +1,11 @@
+/* eslint-disable */
 import axios from 'axios';
 import {useEffect, useState} from 'react';
 import {AiOutlineUnorderedList} from 'react-icons/ai';
 import {ImSearch} from 'react-icons/im';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const HeaderBox = styled.header`
   width: 100%;
@@ -68,24 +70,59 @@ const NavLink = styled(Link)`
 
 const Header = () => {
     const [headerInfo, setHeaderInfo] = useState({});
+    const [searchTarget, setSearchTarget] = useState({
+      category: '',
+      target: '',
+    });
+    const [search, setSearch] = useState(false);
+
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
             .catch(err => err);
-    }, [])
+    }, []);
+
+    const handleChange = ({target: {name, value}}) => {
+      if(!name || !value) return;
+      setSearchTarget({
+        ...searchTarget,
+        [name]: value,
+      });
+    }
+
+    const handleFocus = (event) => {
+      event.target.value = '';
+    }
+
+    const handleClick = () => {
+      setSearch(true);
+    }
+
+    const handleKeyPress = ({key}) => {
+      if(key === 'Enter') {
+        setSearch(true);
+      }
+    }
+
     return (
         <HeaderBox>
+          {search && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`} alt='header logo' />
-            <SearchBox>
-                <SearchCategory name='' id=''>
+            <SearchBox onKeyPress={handleKeyPress}>
+                <SearchCategory name='category' onChange={handleChange}>
                   <option value=''>select category</option>
                   {headerInfo.search && headerInfo.search.map(({key, value}) => (
                     <option value={key} key={key}>{value}</option>
                   ))}
                 </SearchCategory>
-                <SearchInput type='text' />
-                <SearchBtn />
+                <SearchInput
+                  type='text'
+                  name='target'
+                  onChange={handleChange}
+                  onFocus={handleFocus}
+                />
+                <SearchBtn onClick={handleClick} />
             </SearchBox>
             <NavBox>
                 <NavLink to='/signin'>login</NavLink>
@@ -94,5 +131,12 @@ const Header = () => {
         </HeaderBox>
     );
 }
+
+Header.propTypes = {
+  target: PropTypes.string,
+  category: PropTypes.string,
+  searchTarget: PropTypes.func,
+  selectCategory: PropTypes.func,
+};
 
 export default Header;

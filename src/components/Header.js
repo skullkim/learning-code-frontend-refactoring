@@ -29,7 +29,6 @@ const HeaderLogo = styled.img`
 const SearchBox = styled.div`
   height: 35px;
   width: 400px;
-  //background-color: red;
   display: flex;
   align-items: center;
   margin-right: 20px;
@@ -55,8 +54,16 @@ const SearchBtn = styled(ImSearch)`
 
 const NavBox = styled.nav`
   height: 35px;
-  width: 200px;
-  background-color: greenyellow;
+  width: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const NavLink = styled(Link)`
+  font-size: 20px;
+  color: #566270;
+  margin-right: 10px;
 `;
 
 const Header = () => {
@@ -81,8 +88,8 @@ const Header = () => {
                 <SearchBtn />
             </SearchBox>
             <NavBox>
-                <Link to='/signin'>login</Link>
-                <Link to='/signup'>signup</Link>
+                <NavLink to='/signin'>login</NavLink>
+                <NavLink to='/signup'>signup</NavLink>
             </NavBox>
         </HeaderBox>
     );

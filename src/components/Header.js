@@ -11,25 +11,43 @@ const HeaderBox = styled.header`
   display: flex;
   justify-content: center;
   align-items: center;
+  border-bottom: 1px solid black;
+`;
+
+const LinkToLetters = styled(AiOutlineUnorderedList)`
+  height: 35px;
+  width: 35px;
+`;
+
+const SearchBox = styled.div`
+  height: 35px;
+  width: 600px;
+  background-color: red;
+`;
+
+const NavBox = styled.nav`
+  height: 35px;
+  width: 200px;
+  background-color: greenyellow;
 `;
 
 const Header = () => {
    const [headerInfo, setHeaderInfo] = useState({});
     return (
       <HeaderBox>
-        <AiOutlineUnorderedList />
+        <Link to='/letters'><LinkToLetters /></Link>
         <img src='#' alt='header logo' />
-        <div>
+        <SearchBox>
           <select name='' id=''>
             <option value=''>select</option>
           </select>
           <input type='text' />
           <ImSearch />
-        </div>
-        <div>
+        </SearchBox>
+        <NavBox>
           <Link to='/signin'>login</Link>
           <Link to='/signup'>signup</Link>
-        </div>
+        </NavBox>
       </HeaderBox>
     );
 }

@@ -17,17 +17,40 @@ const HeaderBox = styled.header`
 const LinkToLetters = styled(AiOutlineUnorderedList)`
   height: 35px;
   width: 35px;
+  margin-right: 15px;
 `;
 
 const HeaderLogo = styled.img`
   height: 40px;
   width: 50px;
+  margin-right: 15px;
 `;
 
 const SearchBox = styled.div`
   height: 35px;
-  width: 600px;
-  background-color: red;
+  width: 400px;
+  //background-color: red;
+  display: flex;
+  align-items: center;
+  margin-right: 20px;
+`;
+
+const SearchCategory = styled.select`
+  height: 35px;
+  width: 120px;
+  margin-right: 10px;
+  font-size: 14px;
+`;
+
+const SearchInput = styled.input`
+  height: 30px;
+  width: 300px;
+  padding: 0;
+  margin-right: 10px;
+`;
+
+const SearchBtn = styled(ImSearch)`
+  font-size: 28px;
 `;
 
 const NavBox = styled.nav`
@@ -48,11 +71,14 @@ const Header = () => {
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`} alt='header logo' />
             <SearchBox>
-                <select name='' id=''>
-                    <option value=''>select</option>
-                </select>
-                <input type='text' />
-                <ImSearch />
+                <SearchCategory name='' id=''>
+                  <option value=''>select category</option>
+                  {headerInfo.search && headerInfo.search.map(({key, value}) => (
+                    <option value={key} key={key}>{value}</option>
+                  ))}
+                </SearchCategory>
+                <SearchInput type='text' />
+                <SearchBtn />
             </SearchBox>
             <NavBox>
                 <Link to='/signin'>login</Link>

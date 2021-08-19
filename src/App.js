@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
-import Header from "./components/Header";
+import HeaderContainer from './container/startSearchContainer';
 import Book from './pages/Book';
 import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";
@@ -23,7 +23,7 @@ function App() {
         <>
         <Router>
             <GlobalStyle />
-            <Header />
+            <HeaderContainer />
             <Switch>
                 <Route path='/' component={Main} exact/>
                 <Route path='/signin' component={Signin} exact/>

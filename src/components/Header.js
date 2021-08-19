@@ -1,5 +1,6 @@
+/* eslint-disable */
 import axios from 'axios';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
 import { Link, Redirect } from 'react-router-dom';
@@ -66,19 +67,23 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-const Header = () => {
+const Header = ({startSearch, search}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
         target: '',
     });
-    const [search, setSearch] = useState(false);
+    // const [search, setSearch] = useState(false);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
             .catch(err => err);
     }, []);
+
+    // const toggleSearch = useCallback(() => {
+    //     setSearch(!search);
+    // }, [search]);
 
     const handleChange = ({target: {name, value}}) => {
         if(!name || !value) return;
@@ -94,18 +99,20 @@ const Header = () => {
     }
 
     const handleClick = () => {
-        setSearch(true);
+        // setSearch(true);
+        search();
     }
 
     const handleKeyPress = ({key}) => {
         if(key === 'Enter') {
-            setSearch(true);
+            search();
+            // setSearch(true);
         }
     }
 
     return (
         <HeaderBox>
-            {search && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
+            {startSearch && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`} alt='header logo' />
             <SearchBox onKeyPress={handleKeyPress}>

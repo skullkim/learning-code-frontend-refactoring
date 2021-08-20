@@ -1,12 +1,16 @@
-/* eslint-disable */
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 
 import Header from '../components/Header';
 import {search} from '../modules/search';
+import SearchResult from "../pages/SearchResult";
 
-const HeaderContainer = ({startSearch, search}) => {
-    return <Header startSearch={startSearch} search={search} />
+const HeaderContainer = ({startSearch, search: searchTarget}) => {
+    return <Header startSearch={startSearch} search={searchTarget} />
+}
+
+const SearchResultContainer = ({search: searchTarget}) => {
+    return <SearchResult search={searchTarget} />
 }
 
 HeaderContainer.propTypes = {
@@ -14,11 +18,22 @@ HeaderContainer.propTypes = {
     search: PropTypes.func.isRequired,
 };
 
-export default connect(
-  ({searchReducer}) => ({
+SearchResultContainer.propTypes = {
+    search: PropTypes.func.isRequired,
+};
+
+export const PageHeader =  connect(
+    ({searchReducer}) => ({
         startSearch: searchReducer.startSearch,
     }),
-  {
-    search
-  }
+    {
+        search,
+    }
 )(HeaderContainer);
+
+export const SearchResultPage = connect(
+    () => ({}),
+    {
+        search,
+    }
+)(SearchResultContainer);

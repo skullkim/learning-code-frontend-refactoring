@@ -100,12 +100,12 @@ const Header = ({startSearch, search}) => {
 
     const handleClick = () => {
         // setSearch(true);
-        search();
+        search(true);
     }
 
     const handleKeyPress = ({key}) => {
         if(key === 'Enter') {
-            search();
+            search(true);
             // setSearch(true);
         }
     }

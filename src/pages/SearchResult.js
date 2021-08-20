@@ -1,8 +1,11 @@
 /* eslint-disable */
 import PropTypes from 'prop-types';
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {useLocation} from 'react-router-dom';
 
-const SearchResult = ({location, search}) => {
+const SearchResult = ({search}) => {
+    const [loc, setLoc] = useState(useLocation());
+
     useEffect(() => {
       search(false);
     });
@@ -15,12 +18,6 @@ const SearchResult = ({location, search}) => {
 }
 
 SearchResult.propTypes = {
-    location: PropTypes.objectOf(
-        PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ])
-    ).isRequired,
     search: PropTypes.func.isRequired,
 };
 

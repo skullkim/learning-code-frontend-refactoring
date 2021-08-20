@@ -73,17 +73,12 @@ const Header = ({startSearch, search}) => {
         category: '',
         target: '',
     });
-    // const [search, setSearch] = useState(false);
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
             .catch(err => err);
     }, []);
-
-    // const toggleSearch = useCallback(() => {
-    //     setSearch(!search);
-    // }, [search]);
 
     const handleChange = ({target: {name, value}}) => {
         if(!name || !value) return;
@@ -99,14 +94,12 @@ const Header = ({startSearch, search}) => {
     }
 
     const handleClick = () => {
-        // setSearch(true);
         search(true);
     }
 
     const handleKeyPress = ({key}) => {
         if(key === 'Enter') {
             search(true);
-            // setSearch(true);
         }
     }
 

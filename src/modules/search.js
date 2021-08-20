@@ -8,11 +8,9 @@ export const search = (startSearch) => ({
 const initialState = {
     startSearch: false,
 };
-/* eslint-disable */
 function searchReducer(state = initialState, action) {
     switch (action.type) {
         case SEARCH:
-            console.log(action);
             return {
                 startSearch: action.startSearch
             }

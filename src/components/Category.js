@@ -9,11 +9,13 @@ const CategoryBox = styled.aside`
 `;
 
 const ACategory = styled.div`
-    width: 200px;
+  width: 200px;
+  margin-top: 10px;
+  margin-left: 20px;
 `;
 
 const MainCategory = styled.dt`
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
 `;
 
@@ -28,10 +30,9 @@ const Category = () => {
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letters/categories`)
             .then(({data: {data}}) => {
-               console.log(data);
                setCategory(data);
             })
-            .catch((err) => console.log(err));
+            .catch((err) => err);
     }, []);
 
     return (
@@ -41,7 +42,7 @@ const Category = () => {
                     <ACategory key={key}>
                         <MainCategory>{mainCategory}</MainCategory>
                         {value.map(subCategory => (
-                            <SubCategory>{subCategory}</SubCategory>
+                            <SubCategory key={subCategory}>{subCategory}</SubCategory>
                         ))}
                     </ACategory>
                 ))}

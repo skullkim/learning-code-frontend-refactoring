@@ -2,7 +2,7 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
-import Header from "./components/Header";
+import {PageHeader, SearchResultPage} from './container/startSearchContainer';
 import Book from './pages/Book';
 import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";
@@ -10,7 +10,7 @@ import Main from './pages/Main';
 import NotFound from "./pages/NotFound";
 import Posting from "./pages/Posting";
 import Profile from "./pages/Profile";
-import SearchResult from "./pages/SearchResult";
+// import SearchResult from "./pages/SearchResult";
 import Signin from "./pages/Signin";
 import SigninPassword from "./pages/SigninPassword";
 import UserInfo from "./pages/UserInfo";
@@ -21,9 +21,9 @@ import Signup from "./pages/signup";
 function App() {
     return (
         <>
-        <GlobalStyle />
-        <Header />
         <Router>
+            <GlobalStyle />
+            <PageHeader />
             <Switch>
                 <Route path='/' component={Main} exact/>
                 <Route path='/signin' component={Signin} exact/>
@@ -37,7 +37,7 @@ function App() {
                 <Route path='/user/:userId/posting' component={Posting} exact/>
                 <Route path='/user/:userId/posting/:postingId' component={EditPosting} exact/>
                 <Route path='/user/:userId/password' component={UserPassword} exact />
-                <Route path='/search/:category/:target' component={SearchResult} />
+                <Route path='/search/:category' component={SearchResultPage} />
                 <Route component={NotFound}/>
             </Switch>
         </Router>

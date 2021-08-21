@@ -5,22 +5,20 @@ import styled from 'styled-components';
 const FooterBox = styled.footer`
     height: 80px;
     width: 100%;;
-    background-color: red;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-top: 1px solid gray;
 `;
 
 const Logo = styled.img`
     height: 60px;
     width: 80px;
-    background-color: #61dafb;
 `;
 
 const InfoBox = styled.article`
     height: 60px;
     width: 200px;
-    background-color: yellow;
     display: flex;
     flex-direction: column;
     justify-content: center;

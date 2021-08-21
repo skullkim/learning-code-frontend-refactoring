@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useState, useEffect} from 'react';
+import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 const CategoryBox = styled.aside`
@@ -40,9 +41,13 @@ const Category = () => {
             <CategoryBox>
                 {category && category.map(({key, main_category: mainCategory, value}) => (
                     <ACategory key={key}>
-                        <MainCategory>{mainCategory}</MainCategory>
+                        <MainCategory>
+                            <Link to={`/search/category?query=${mainCategory}`}>{mainCategory}</Link>
+                        </MainCategory>
                         {value.map(subCategory => (
-                            <SubCategory key={subCategory}>{subCategory}</SubCategory>
+                            <SubCategory key={subCategory}>
+                                <Link to={`/search/category?query=${subCategory}`}>{subCategory}</Link>
+                            </SubCategory>
                         ))}
                     </ACategory>
                 ))}

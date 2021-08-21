@@ -1,9 +1,9 @@
-/* eslint-disable */
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderBox = styled.header`
@@ -49,8 +49,13 @@ const SearchInput = styled.input`
   margin-right: 10px;
 `;
 
-const SearchBtn = styled(ImSearch)`
-  font-size: 28px;
+const SearchBtn = styled.button`
+  background-color: transparent;
+    border: 0;
+`;
+
+const SearchLogo = styled(ImSearch)`
+    font-size: 25px;
 `;
 
 const NavBox = styled.nav`
@@ -73,6 +78,7 @@ const Header = ({startSearch, search}) => {
         category: '',
         target: '',
     });
+    const history = useHistory();
 
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
@@ -80,34 +86,42 @@ const Header = ({startSearch, search}) => {
             .catch(err => err);
     }, []);
 
-    const handleChange = ({target: {name, value}}) => {
+    const handleChange = useCallback(({target: {name, value}}) => {
         if(!name || !value) return;
         setSearchTarget({
             ...searchTarget,
             [name]: value,
         });
-    }
+    }, [searchTarget]);
 
     const handleFocus = (event) => {
         const eve = event;
         eve.target.value='';
     }
 
-    const handleClick = () => {
+    const handleSearchClick = useCallback(() => {
         search(true);
+    }, [startSearch]);
+
+    const handleGoHomeClick = () => {
+        history.push('/');
     }
 
-    const handleKeyPress = ({key}) => {
+    const handleKeyPress = useCallback(({key}) => {
         if(key === 'Enter') {
             search(true);
         }
-    }
+    }, [startSearch]);
 
     return (
         <HeaderBox>
             {startSearch && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
             <Link to='/letters'><LinkToLetters /></Link>
-            <HeaderLogo src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`} alt='header logo' />
+            <HeaderLogo
+              src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}
+              alt='header logo'
+              onClick={handleGoHomeClick}
+            />
             <SearchBox onKeyPress={handleKeyPress}>
                 <SearchCategory name='category' onChange={handleChange}>
                     <option value=''>select category</option>
@@ -121,7 +135,7 @@ const Header = ({startSearch, search}) => {
                   onChange={handleChange}
                   onFocus={handleFocus}
                 />
-                <SearchBtn onClick={handleClick} />
+                <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>
             <NavBox>
                 <NavLink to='/signin'>login</NavLink>
@@ -130,5 +144,10 @@ const Header = ({startSearch, search}) => {
         </HeaderBox>
     );
 }
+
+Header.propTypes = {
+    startSearch: PropTypes.bool.isRequired,
+    search: PropTypes.func.isRequired,
+};
 
 export default Header;

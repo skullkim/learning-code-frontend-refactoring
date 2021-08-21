@@ -25,13 +25,12 @@ const SubCategory = styled.dd`
   font-weight: normal;
 `;
 
-/* eslint-disable */
 const Category = () => {
     const [category, setCategory] = useState([]);
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letters/categories`)
             .then(({data: {data}}) => {
-               setCategory(data);
+                setCategory(data);
             })
             .catch((err) => err);
     }, []);

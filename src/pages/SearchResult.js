@@ -4,6 +4,8 @@ import qs from 'qs';
 import {useEffect, useState} from "react";
 import {useLocation, useParams} from 'react-router-dom';
 
+import Category from "../components/Category";
+
 const SearchResult = ({search}) => {
     const query = qs.parse(useLocation().search, {
         ignoreQueryPrefix: true,
@@ -16,7 +18,7 @@ const SearchResult = ({search}) => {
 
     return (
       <div>
-        search result
+          <Category />
       </div>
     );
 }

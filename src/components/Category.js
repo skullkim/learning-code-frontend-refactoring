@@ -1,9 +1,15 @@
+import axios from 'axios';
+import {useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 const CategoryBox = styled.aside`
-  height: 900px;
+  height: auto;
   width: 200px;
-  background-color: red;
+  border-right: 1px solid gray;
+`;
+
+const ACategory = styled.div`
+    width: 200px;
 `;
 
 const MainCategory = styled.dt`
@@ -16,12 +22,29 @@ const SubCategory = styled.dd`
   font-weight: normal;
 `;
 
+/* eslint-disable */
 const Category = () => {
+    const [category, setCategory] = useState([]);
+    useEffect(() => {
+        axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letters/categories`)
+            .then(({data: {data}}) => {
+               console.log(data);
+               setCategory(data);
+            })
+            .catch((err) => console.log(err));
+    }, []);
+
     return (
         <>
             <CategoryBox>
-                <MainCategory>Main</MainCategory>
-                <SubCategory>Sub</SubCategory>
+                {category && category.map(({key, main_category: mainCategory, value}) => (
+                    <ACategory key={key}>
+                        <MainCategory>{mainCategory}</MainCategory>
+                        {value.map(subCategory => (
+                            <SubCategory>{subCategory}</SubCategory>
+                        ))}
+                    </ACategory>
+                ))}
             </CategoryBox>
         </>
     );

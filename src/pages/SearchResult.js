@@ -102,7 +102,6 @@ const SearchResult = ({search}) => {
     if(loading) {
         return <div>loading...</div>;
     }
-
     return (
         <SearchPageBox>
             <Category />
@@ -115,13 +114,13 @@ const SearchResult = ({search}) => {
                             <LetterCategory>{mainCategory}</LetterCategory>
                         </LetterBox>
                     )) :
-                    searchResult && searchResult.map(({authors, contents, title, thumbnail, url}) => (
-                        <BookBox key={thumbnail}>
+                    searchResult && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => (
+                        <BookBox key={url}>
                             <BookTitle><a href={url}>{title}</a></BookTitle>
                             <BookInfo>
                                 <BookImage src={thumbnail} alt={`${title} thumbnail`}/>
                                 <BookIntroduction>
-                                    <BookAuthors>{authors.map(author => `${author}, `)}</BookAuthors>
+                                    <BookAuthors>{authors && authors.map(author => `${author}, `)}</BookAuthors>
                                     <BookContents>{contents}</BookContents>
                                 </BookIntroduction>
                             </BookInfo>

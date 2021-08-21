@@ -45,7 +45,10 @@ const Category = () => {
                         </MainCategory>
                         {value.map(subCategory => (
                             <SubCategory key={subCategory}>
-                                <Link to={`/search/category?query=${subCategory}`}>{subCategory}</Link>
+                                {key === 'book' && subCategory === '도서 추천' ?
+                                    <Link to='/search/book?query=프로그래밍'>{subCategory}</Link> :
+                                    <Link to={`/search/category?query=${subCategory}`}>{subCategory}</Link>
+                                }
                             </SubCategory>
                         ))}
                     </ACategory>

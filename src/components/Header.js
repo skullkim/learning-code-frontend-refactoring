@@ -118,9 +118,9 @@ const Header = ({startSearch, search}) => {
             {startSearch && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo
-              src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}
-              alt='header logo'
-              onClick={handleGoHomeClick}
+                src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}
+                alt='header logo'
+                onClick={handleGoHomeClick}
             />
             <SearchBox onKeyPress={handleKeyPress}>
                 <SearchCategory name='category' onChange={handleChange}>
@@ -130,10 +130,10 @@ const Header = ({startSearch, search}) => {
                     ))}
                 </SearchCategory>
                 <SearchInput
-                  type='text'
-                  name='target'
-                  onChange={handleChange}
-                  onFocus={handleFocus}
+                    type='text'
+                    name='target'
+                    onChange={handleChange}
+                    onFocus={handleFocus}
                 />
                 <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>

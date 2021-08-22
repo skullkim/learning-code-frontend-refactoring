@@ -17,7 +17,6 @@ const ResultBox = styled.article`
   margin: 0 30px;
 `;
 
-/* eslint-disable */
 const Letters = () => {
     const [letters, setLetters] = useState([]);
     const [loading, setLoading] = useState(false);

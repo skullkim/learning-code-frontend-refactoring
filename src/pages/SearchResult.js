@@ -5,7 +5,9 @@ import {useEffect, useState} from "react";
 import {useLocation, useParams} from 'react-router-dom';
 import styled from 'styled-components';
 
+import BookList from "../components/BookList";
 import Category from "../components/Category";
+import LetterList from "../components/LetterList";
 
 const SearchPageBox = styled.main`
   width: 100%;
@@ -19,60 +21,8 @@ const ResultBox = styled.article`
   margin: 0 30px;
 `;
 
-const LetterBox = styled.section`
-  height: 70px;
-  width: 100%;
-  margin-bottom: 10px;
-  border-bottom: 1px solid gray;
-`;
+const Warning = styled.h4``;
 
-const LetterTitle = styled.h4``;
-
-const LetterCategory = styled.p`
-    margin-bottom: 10px;
-`;
-
-const BookBox = styled.section`
-  height: 150px;
-  width: 100%;
-  margin-bottom: 10px;
-  border-bottom: 1px solid gray;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-`;
-
-const BookInfo = styled.section`
-  height: 100px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  margin-left: 10px;
-`;
-
-const BookTitle = styled.h4`
-  margin: 0;
-`;
-
-const BookImage = styled.img`
-  height: 100px;
-  width: 70px;
-`;
-
-const BookIntroduction = styled.div`
-  height: 100px;
-  width: 100%;
-  margin-left: 10px;
-`;
-
-const BookAuthors = styled.h5`
-  margin-top: 0;
-  margin-bottom: 5px;
-`;
-
-const BookContents = styled.p`
-    margin: 0;
-`;
 
 const SearchResult = ({search}) => {
     const [searchResult, setSearchResult] = useState([]);
@@ -100,36 +50,32 @@ const SearchResult = ({search}) => {
     }, [category, query]);
 
     if(loading) {
-        return <div>loading...</div>;
+        return <Warning>loading...</Warning>;
     }
-
+/* eslint-disable */
     return (
         <SearchPageBox>
             <Category />
             <ResultBox>
-                {searchResult && noResult && <LetterTitle>{query}에 대한 검색 결과가 없습니다</LetterTitle>}
+                {searchResult.length && noResult && <Warning>{query}에 대한 검색 결과가 없습니다</Warning>}
                 {category !== 'book' ?
-                    searchResult && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => {
-                        if(!id) return 0;
+                    searchResult && searchResult.length && searchResult[0].id && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => {
+                        console.log(id);
+                        if(!id) return (<Warning>loading...</Warning>);
                         return (
-                            <LetterBox key={id}>
-                                <LetterTitle>{title}</LetterTitle>
-                                <LetterCategory>{mainCategory}</LetterCategory>
-                            </LetterBox>
-                        )}) :
-                    searchResult && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => {
-                        if(!url) return 0;
+                            <LetterList id={id} title={title} mainCategory={mainCategory} />
+                        );
+                    }) :
+                    searchResult && searchResult.length && searchResult[0].url && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => {
+                        if(!url) return (<Warning>loading...</Warning>);
                         return (
-                            <BookBox key={url}>
-                                <BookTitle><a href={url}>{title}</a></BookTitle>
-                                <BookInfo>
-                                    <BookImage src={thumbnail} alt={`${title} thumbnail`}/>
-                                    <BookIntroduction>
-                                        <BookAuthors>{authors && authors.map(author => `${author}, `)}</BookAuthors>
-                                        <BookContents>{contents}</BookContents>
-                                    </BookIntroduction>
-                                </BookInfo>
-                            </BookBox>
+                            <BookList
+                                authors={authors}
+                                contents={contents}
+                                title={title}
+                                thumbnail={thumbnail}
+                                url={url}
+                            />
                         )})
                 }
             </ResultBox>

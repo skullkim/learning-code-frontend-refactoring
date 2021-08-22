@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 import styled from "styled-components";
 
 const LetterBox = styled.section`
@@ -17,7 +18,7 @@ const LetterCategory = styled.p`
 const LetterList = ({id, title, mainCategory}) => {
     return (
         <LetterBox key={id}>
-            <LetterTitle>{title}</LetterTitle>
+            <LetterTitle><Link to={`/letter/${id}`}>{title}</Link></LetterTitle>
             <LetterCategory>{mainCategory}</LetterCategory>
         </LetterBox>
     );

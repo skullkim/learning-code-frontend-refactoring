@@ -102,30 +102,35 @@ const SearchResult = ({search}) => {
     if(loading) {
         return <div>loading...</div>;
     }
+
     return (
         <SearchPageBox>
             <Category />
             <ResultBox>
                 {searchResult && noResult && <LetterTitle>{query}에 대한 검색 결과가 없습니다</LetterTitle>}
                 {category !== 'book' ?
-                    searchResult && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => (
-                        <LetterBox key={id}>
-                            <LetterTitle>{title}</LetterTitle>
-                            <LetterCategory>{mainCategory}</LetterCategory>
-                        </LetterBox>
-                    )) :
-                    searchResult && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => (
-                        <BookBox key={url}>
-                            <BookTitle><a href={url}>{title}</a></BookTitle>
-                            <BookInfo>
-                                <BookImage src={thumbnail} alt={`${title} thumbnail`}/>
-                                <BookIntroduction>
-                                    <BookAuthors>{authors && authors.map(author => `${author}, `)}</BookAuthors>
-                                    <BookContents>{contents}</BookContents>
-                                </BookIntroduction>
-                            </BookInfo>
-                        </BookBox>
-                    ))
+                    searchResult && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => {
+                        if(!id) return 0;
+                        return (
+                            <LetterBox key={id}>
+                                <LetterTitle>{title}</LetterTitle>
+                                <LetterCategory>{mainCategory}</LetterCategory>
+                            </LetterBox>
+                        )}) :
+                    searchResult && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => {
+                        if(!url) return 0;
+                        return (
+                            <BookBox key={url}>
+                                <BookTitle><a href={url}>{title}</a></BookTitle>
+                                <BookInfo>
+                                    <BookImage src={thumbnail} alt={`${title} thumbnail`}/>
+                                    <BookIntroduction>
+                                        <BookAuthors>{authors && authors.map(author => `${author}, `)}</BookAuthors>
+                                        <BookContents>{contents}</BookContents>
+                                    </BookIntroduction>
+                                </BookInfo>
+                            </BookBox>
+                        )})
                 }
             </ResultBox>
         </SearchPageBox>

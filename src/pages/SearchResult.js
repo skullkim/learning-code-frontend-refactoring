@@ -52,7 +52,6 @@ const SearchResult = ({search}) => {
     if(loading) {
         return <Warning>loading...</Warning>;
     }
-/* eslint-disable */
     return (
         <SearchPageBox>
             <Category />
@@ -60,7 +59,6 @@ const SearchResult = ({search}) => {
                 {searchResult.length && noResult && <Warning>{query}에 대한 검색 결과가 없습니다</Warning>}
                 {category !== 'book' ?
                     searchResult && searchResult.length && searchResult[0].id && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => {
-                        console.log(id);
                         if(!id) return (<Warning>loading...</Warning>);
                         return (
                             <LetterList id={id} title={title} mainCategory={mainCategory} />

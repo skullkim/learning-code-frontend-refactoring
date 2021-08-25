@@ -1,3 +1,4 @@
+import axios from 'axios';
 import {useFormik} from 'formik';
 import {useState} from "react";
 import {Link} from 'react-router-dom';
@@ -63,7 +64,18 @@ const Signin = () => {
                 .required('비밀번호를 입력해 주세요')
                 .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
         }),
-        onSubmit: () => {console.log(111)},
+        onSubmit: () => {
+            axios({
+                method: 'post',
+                url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/login`,
+                data: {
+                    email: `${process.env.REACT_APP_TEMP_EMAIL}`,
+                    password: `${process.env.REACT_APP_TEMP_PASSWORD}`,
+                }
+            })
+                .then(({data: {data}}) => console.log(data))
+                .catch(err => console.log(err))
+        },
     });
 
     const handleClick = (event) => {
@@ -102,7 +114,7 @@ const Signin = () => {
                     placeholder='password'
                 />
                 <LoginBtnBox>
-                    <LoginBtn onClick={handleClick} >Sign in</LoginBtn>
+                    <LoginBtn type='submit' onClick={handleClick} >Sign in</LoginBtn>
                     <LoginBtn><Link to='/signin/password'>Find password</Link></LoginBtn>
                 </LoginBtnBox>
                 {formik.touched.email && formik.errors.email && currFocused.email ? <div>{formik.errors.email}</div> : null}

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {useFormik} from 'formik';
+import ProTypes from 'prop-types';
 import {useState} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
@@ -45,8 +46,8 @@ const LoginBtn = styled.button`
 `;
 
 
-const Signin = () => {
-    /* eslint-disable */
+/* eslint-disable */
+const Signin = ({userInfo, saveUserInfo}) => {
     const [currFocused, setCurrFocused] = useState({
         email: false,
         password: false,
@@ -73,11 +74,11 @@ const Signin = () => {
                     password: `${process.env.REACT_APP_TEMP_PASSWORD}`,
                 }
             })
-                .then(({data: {data}}) => console.log(data))
+                .then(({data: {data: {user_id: userId, accessToken}}}) => saveUserInfo({userId: `${userId}`, accessToken}))
                 .catch(err => console.log(err))
         },
     });
-
+    console.log('signin', userInfo);
     const handleClick = (event) => {
         event.preventDefault();
         formik.handleSubmit();
@@ -123,5 +124,10 @@ const Signin = () => {
         </LoginBox>
     );
 }
+
+Signin.propTypes = {
+    userInfo: ProTypes.objectOf(ProTypes.string).isRequired,
+    saveUserInfo: ProTypes.func.isRequired,
+};
 
 export default Signin;

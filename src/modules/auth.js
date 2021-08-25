@@ -18,7 +18,7 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case SAVE_USER_INFO:
             return {
-                userInfo: {...action.userInfo},
+                userInfo: action.userInfo,
             };
         default:
             return state;

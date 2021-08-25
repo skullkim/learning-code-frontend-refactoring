@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderBox = styled.header`
@@ -72,14 +72,14 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-const Header = ({startSearch, search}) => {
+/* eslint-disable */
+const Header = ({userInfo, logOut}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
         target: '',
     });
     const history = useHistory();
-
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
@@ -100,22 +100,22 @@ const Header = ({startSearch, search}) => {
     }
 
     const handleSearchClick = useCallback(() => {
-        search(true);
-    }, [startSearch]);
+        history.push(`/search/${searchTarget.category}?query=${searchTarget.target}`);
+    }, [searchTarget]);
 
-    const handleGoHomeClick = () => {
+    const handleGoHomeClick = useCallback(() => {
         history.push('/');
-    }
+    }, []);
 
     const handleKeyPress = useCallback(({key}) => {
         if(key === 'Enter') {
-            search(true);
+            history.push(`/search/${searchTarget.category}?query=${searchTarget.target}`);
         }
-    }, [startSearch]);
+    }, [searchTarget]);
 
     return (
         <HeaderBox>
-            {startSearch && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
+            {userInfo.id && <h1>hi</h1>}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo
                 src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}

@@ -1,5 +1,8 @@
+import {useFormik} from 'formik';
+import {useState} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
+import * as Yup from 'yup';
 
 const LoginBox = styled.article`
   width: 100%;
@@ -9,23 +12,26 @@ const LoginBox = styled.article`
   align-items: center;
 `;
 
-const LocalLoginBox = styled.section`
+const LocalLoginBox = styled.form`
   width: 35%;
   height: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const LoginTitle = styled.h4`
-    text-align: center;
+  text-align: center;
 `;
 
 const LoginInput = styled.input`
-  width: 100%;
-  height: 20px;
+  width: 50%;
+  height: 30px;
   margin-top: 10px;
 `;
 
 const LoginBtnBox = styled.div`
-  width: 103%;
+  width: 51%;
   height: 20px;
   margin-top: 15px;
   display: flex;
@@ -39,16 +45,67 @@ const LoginBtn = styled.button`
 
 
 const Signin = () => {
+    /* eslint-disable */
+    const [currFocused, setCurrFocused] = useState({
+        email: false,
+        password: false,
+    });
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .required('이메일을 입력해 주세요')
+                .matches('/^([0-9a-zA-Z_\\.-]+)@([0-9a-zA-Z_-]+)(\\.[0-9a-zA-Z_-]+){1,2}$/', '이메일 형식이 틀렸습니다'),
+            password: Yup.string()
+                .required('비밀번호를 입력해 주세요')
+                .matches('/^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$/', '비밀번호는 8자이상, 명어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
+        }),
+        onSubmit: () => {console.log(111)},
+    });
+
+    const handleClick = (event) => {
+        event.preventDefault();
+    }
+
+    const handleChange= (event) => {
+        formik.handleChange(event);
+    }
+
+    const handleBlur = (event) => {
+        const {target: {name}} = event;
+        name === 'password' ?
+            setCurrFocused({email: false, password: true}) :
+            setCurrFocused({email: true, password: false});
+        formik.handleBlur(event);
+    }
+
     return (
         <LoginBox>
             <LocalLoginBox>
                 <LoginTitle>Learning Code 로그인</LoginTitle>
-                <LoginInput placeholder='email'/>
-                <LoginInput type='password' placeholder='password' />
+                <LoginInput
+                    type='text'
+                    name='email'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='email'
+                />
+                <LoginInput
+                    name='password'
+                    type='password'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='password'
+                />
                 <LoginBtnBox>
-                    <LoginBtn>Sign in</LoginBtn>
+                    <LoginBtn onClick={handleClick} >Sign in</LoginBtn>
                     <LoginBtn><Link to='/signin/password'>Find password</Link></LoginBtn>
                 </LoginBtnBox>
+                {formik.touched.email && formik.errors.email && currFocused.email ? <div>{formik.errors.email}</div> : null}
+                {formik.touched.password && formik.errors.password && currFocused.password ? <div>{formik.errors.password}</div> : null}
             </LocalLoginBox>
         </LoginBox>
     );

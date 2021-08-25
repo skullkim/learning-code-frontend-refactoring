@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {useFormik} from 'formik';
 import ProTypes from 'prop-types';
-import {useState} from "react";
+import {useState, useCallback} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -78,23 +78,22 @@ const Signin = ({userInfo, saveUserInfo}) => {
                 .catch(err => console.log(err))
         },
     });
-    console.log('signin', userInfo);
-    const handleClick = (event) => {
+    const handleClick = useCallback((event) => {
         event.preventDefault();
         formik.handleSubmit();
-    }
+    }, []);
 
-    const handleChange= (event) => {
+    const handleChange= useCallback((event) => {
         formik.handleChange(event);
-    }
+    }, []);
 
-    const handleBlur = (event) => {
+    const handleBlur = useCallback((event) => {
         const {target: {name}} = event;
         name === 'password' ?
             setCurrFocused({email: false, password: true}) :
             setCurrFocused({email: true, password: false});
         formik.handleBlur(event);
-    }
+    }, []);
 
     return (
         <LoginBox>

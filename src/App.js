@@ -3,8 +3,9 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 /* eslint-diable */
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
+import {PageHeader} from './container/HeaderContainer';
 import {SigninPage} from "./container/signinContainer";
-import {PageHeader, SearchResultPage} from './container/startSearchContainer';
+import {SearchResultPage} from './container/startSearchContainer';
 import Book from './pages/Book';
 import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";

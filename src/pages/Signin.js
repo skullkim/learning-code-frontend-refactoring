@@ -46,8 +46,7 @@ const LoginBtn = styled.button`
 `;
 
 
-/* eslint-disable */
-const Signin = ({userInfo, saveUserInfo}) => {
+const Signin = ({saveUserInfo}) => {
     const [currFocused, setCurrFocused] = useState({
         email: false,
         password: false,
@@ -75,7 +74,7 @@ const Signin = ({userInfo, saveUserInfo}) => {
                 }
             })
                 .then(({data: {data: {user_id: userId, accessToken}}}) => saveUserInfo({userId: `${userId}`, accessToken}))
-                .catch(err => console.log(err))
+                .catch(err => err)
         },
     });
     const handleClick = useCallback((event) => {
@@ -89,9 +88,9 @@ const Signin = ({userInfo, saveUserInfo}) => {
 
     const handleBlur = useCallback((event) => {
         const {target: {name}} = event;
-        name === 'password' ?
-            setCurrFocused({email: false, password: true}) :
-            setCurrFocused({email: true, password: false});
+        setCurrFocused(name === 'password' ?
+            {email: false, password: true} :
+            {email: true, password: false});
         formik.handleBlur(event);
     }, []);
 
@@ -125,7 +124,6 @@ const Signin = ({userInfo, saveUserInfo}) => {
 }
 
 Signin.propTypes = {
-    userInfo: ProTypes.objectOf(ProTypes.string).isRequired,
     saveUserInfo: ProTypes.func.isRequired,
 };
 

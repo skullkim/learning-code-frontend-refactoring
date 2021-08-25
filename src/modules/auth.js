@@ -14,11 +14,9 @@ const initialState = {
         accessToken: '',
     },
 };
-/* eslint-disable */
 function authReducer(state = initialState, action) {
     switch (action.type) {
         case SAVE_USER_INFO:
-            console.log('action', action);
             return {
                 userInfo: {...action.userInfo},
             };

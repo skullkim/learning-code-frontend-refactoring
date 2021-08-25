@@ -32,7 +32,7 @@ const SearchBox = styled.div`
   width: 400px;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 50px;
 `;
 
 const SearchCategory = styled.select`
@@ -80,6 +80,7 @@ const Header = ({userInfo, logOut}) => {
         target: '',
     });
     const history = useHistory();
+
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
@@ -115,7 +116,6 @@ const Header = ({userInfo, logOut}) => {
 
     return (
         <HeaderBox>
-            {userInfo.id && <h1>hi</h1>}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo
                 src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}
@@ -137,17 +137,24 @@ const Header = ({userInfo, logOut}) => {
                 />
                 <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>
-            <NavBox>
-                <NavLink to='/signin'>login</NavLink>
-                <NavLink to='/signup'>signup</NavLink>
-            </NavBox>
+            {!userInfo.userId ?
+                <NavBox>
+                    <NavLink to='/signin'>login</NavLink>
+                    <NavLink to='/signup'>signup</NavLink>
+                </NavBox> :
+                <NavBox>
+                    <NavLink to='/posting'>posting</NavLink>
+                    <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
+                    <NavLink to='/logout'>logout</NavLink>
+                </NavBox>
+            }
         </HeaderBox>
     );
 }
 
 Header.propTypes = {
-    startSearch: PropTypes.bool.isRequired,
-    search: PropTypes.func.isRequired,
+    userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
+    logOut: PropTypes.func.isRequired,
 };
 
 export default Header;

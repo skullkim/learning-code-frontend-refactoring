@@ -1,11 +1,8 @@
 const SAVE_USER_INFO = 'auth/SAVE_USER_INFO';
 
-export const saveUserInfo = ({userId, accessToken}) => ({
+export const saveUserInfo = (userInfo) => ({
     type: SAVE_USER_INFO,
-    userInfo: {
-        userId,
-        accessToken,
-    }
+    userInfo
 });
 
 const initialState = {
@@ -18,7 +15,7 @@ function authReducer(state = initialState, action) {
     switch (action.type) {
         case SAVE_USER_INFO:
             return {
-                userInfo: action.userInfo,
+                userInfo: {...action.userInfo},
             };
         default:
             return state;

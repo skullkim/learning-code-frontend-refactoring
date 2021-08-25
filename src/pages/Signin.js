@@ -45,7 +45,6 @@ const LoginBtn = styled.button`
   height: 20px;
 `;
 
-
 const Signin = ({saveUserInfo}) => {
     const [currFocused, setCurrFocused] = useState({
         email: false,
@@ -77,6 +76,7 @@ const Signin = ({saveUserInfo}) => {
                 .catch(err => err)
         },
     });
+
     const handleClick = useCallback((event) => {
         event.preventDefault();
         formik.handleSubmit();

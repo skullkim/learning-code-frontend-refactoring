@@ -57,17 +57,18 @@ const Signin = () => {
         },
         validationSchema: Yup.object({
             email: Yup.string()
-                .required('이메일을 입력해 주세요')
-                .matches('/^([0-9a-zA-Z_\\.-]+)@([0-9a-zA-Z_-]+)(\\.[0-9a-zA-Z_-]+){1,2}$/', '이메일 형식이 틀렸습니다'),
+                .matches(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i, {message: '이메일 형식이 틀렸습니다'})
+                .required('이메일을 입력해 주세요'),
             password: Yup.string()
                 .required('비밀번호를 입력해 주세요')
-                .matches('/^(?=.*[A-Za-z])(?=.*\\d)(?=.*[$@$!%*#?&])[A-Za-z\\d$@$!%*#?&]{8,}$/', '비밀번호는 8자이상, 명어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
         }),
         onSubmit: () => {console.log(111)},
     });
 
     const handleClick = (event) => {
         event.preventDefault();
+        formik.handleSubmit();
     }
 
     const handleChange= (event) => {

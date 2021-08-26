@@ -70,7 +70,8 @@ const Signin = ({saveUserInfo}) => {
                 data: {
                     email: `${process.env.REACT_APP_TEMP_EMAIL}`,
                     password: `${process.env.REACT_APP_TEMP_PASSWORD}`,
-                }
+                },
+                'withCredentials': true,
             })
                 .then(({data: {data: {user_id: userId, accessToken}}}) => saveUserInfo({userId: `${userId}`, accessToken}))
                 .catch(err => err)

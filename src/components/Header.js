@@ -114,6 +114,21 @@ const Header = ({userInfo, logOut}) => {
         }
     }, [searchTarget]);
 
+    const handleLogout = useCallback((event) => {
+        event.preventDefault();
+        logOut();
+        axios({
+            method: 'delete',
+            url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
+            headers: {
+                'Authorization': `Bearer ${userInfo.accessToken}`,
+            },
+            withCredentials: true,
+        })
+            .then(() => history.push('/'))
+            .catch(err => err);
+    }, [userInfo]);
+
     return (
         <HeaderBox>
             <Link to='/letters'><LinkToLetters /></Link>
@@ -145,7 +160,7 @@ const Header = ({userInfo, logOut}) => {
                 <NavBox>
                     <NavLink to='/posting'>posting</NavLink>
                     <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
-                    <NavLink to='/logout'>logout</NavLink>
+                    <NavLink to='#' onClick={handleLogout}>logout</NavLink>
                 </NavBox>
             }
         </HeaderBox>

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
-import { Link, Redirect, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
 const HeaderBox = styled.header`
@@ -32,7 +32,7 @@ const SearchBox = styled.div`
   width: 400px;
   display: flex;
   align-items: center;
-  margin-right: 20px;
+  margin-right: 50px;
 `;
 
 const SearchCategory = styled.select`
@@ -72,7 +72,8 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-const Header = ({startSearch, search}) => {
+/* eslint-disable */
+const Header = ({userInfo, logOut}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
@@ -100,22 +101,21 @@ const Header = ({startSearch, search}) => {
     }
 
     const handleSearchClick = useCallback(() => {
-        search(true);
-    }, [startSearch]);
+        history.push(`/search/${searchTarget.category}?query=${searchTarget.target}`);
+    }, [searchTarget]);
 
-    const handleGoHomeClick = () => {
+    const handleGoHomeClick = useCallback(() => {
         history.push('/');
-    }
+    }, []);
 
     const handleKeyPress = useCallback(({key}) => {
         if(key === 'Enter') {
-            search(true);
+            history.push(`/search/${searchTarget.category}?query=${searchTarget.target}`);
         }
-    }, [startSearch]);
+    }, [searchTarget]);
 
     return (
         <HeaderBox>
-            {startSearch && <Redirect to={`/search/${searchTarget.category}?query=${searchTarget.target}`} />}
             <Link to='/letters'><LinkToLetters /></Link>
             <HeaderLogo
                 src={`${process.env.REACT_APP_SERVER_ORIGIN}${headerInfo.logo}`}
@@ -137,17 +137,24 @@ const Header = ({startSearch, search}) => {
                 />
                 <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>
-            <NavBox>
-                <NavLink to='/signin'>login</NavLink>
-                <NavLink to='/signup'>signup</NavLink>
-            </NavBox>
+            {!userInfo.userId ?
+                <NavBox>
+                    <NavLink to='/signin'>login</NavLink>
+                    <NavLink to='/signup'>signup</NavLink>
+                </NavBox> :
+                <NavBox>
+                    <NavLink to='/posting'>posting</NavLink>
+                    <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
+                    <NavLink to='/logout'>logout</NavLink>
+                </NavBox>
+            }
         </HeaderBox>
     );
 }
 
 Header.propTypes = {
-    startSearch: PropTypes.bool.isRequired,
-    search: PropTypes.func.isRequired,
+    userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
+    logOut: PropTypes.func.isRequired,
 };
 
 export default Header;

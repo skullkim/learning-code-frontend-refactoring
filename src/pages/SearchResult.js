@@ -61,13 +61,14 @@ const SearchResult = ({search}) => {
                     searchResult && searchResult.length && searchResult[0].id && !noResult && searchResult.map(({ id, title, main_category: mainCategory }) => {
                         if(!id) return (<Warning>loading...</Warning>);
                         return (
-                            <LetterList id={id} title={title} mainCategory={mainCategory} />
+                            <LetterList key={id} id={id} title={title} mainCategory={mainCategory} />
                         );
                     }) :
                     searchResult && searchResult.length && searchResult[0].url && !noResult && searchResult.map(({authors, contents, title, thumbnail, url}) => {
                         if(!url) return (<Warning>loading...</Warning>);
                         return (
                             <BookList
+                                key={url}
                                 authors={authors}
                                 contents={contents}
                                 title={title}

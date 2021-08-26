@@ -89,7 +89,7 @@ const Letter = () => {
     useEffect(() => {
         setLoading(true);
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letter/${letterId}`)
-            .then(({data: {data}}) => { console.log(data); setLetter(data);})
+            .then(({data: {data}}) =>  setLetter(data))
             .catch(err => err);
         setLoading(false);
     },[]);
@@ -97,8 +97,7 @@ const Letter = () => {
     if(loading){
         return (<div>loading...</div>);
     }
-    if(letter.main_data)
-        console.log(letter.main_data.main_posting);
+
     return (
         <LetterBox>
             <TitleBox>

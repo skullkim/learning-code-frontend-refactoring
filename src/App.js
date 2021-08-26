@@ -2,7 +2,9 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
-import {PageHeader, SearchResultPage} from './container/startSearchContainer';
+import {PageHeader} from './container/HeaderContainer';
+import {SigninPage} from "./container/signinContainer";
+import {SearchResultPage} from './container/startSearchContainer';
 import Book from './pages/Book';
 import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";
@@ -10,8 +12,6 @@ import Main from './pages/Main';
 import NotFound from "./pages/NotFound";
 import Posting from "./pages/Posting";
 import Profile from "./pages/Profile";
-// import SearchResult from "./pages/SearchResult";
-import Signin from "./pages/Signin";
 import SigninPassword from "./pages/SigninPassword";
 import UserInfo from "./pages/UserInfo";
 import UserPassword from "./pages/UserPassword";
@@ -26,7 +26,7 @@ function App() {
                 <PageHeader />
                 <Switch>
                     <Route path='/' component={Main} exact/>
-                    <Route path='/signin' component={Signin} exact/>
+                    <Route path='/signin' component={SigninPage}/>
                     <Route path='/signin/password' component={SigninPassword}/>
                     <Route path='/signup' component={Signup} />
                     <Route path='/letters' component={Letters} />

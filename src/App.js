@@ -13,10 +13,10 @@ import NotFound from "./pages/NotFound";
 import Posting from "./pages/Posting";
 import Profile from "./pages/Profile";
 import SigninPassword from "./pages/SigninPassword";
+import Signup from "./pages/Signup";
 import UserInfo from "./pages/UserInfo";
 import UserPassword from "./pages/UserPassword";
 import Letters from "./pages/letters";
-import Signup from "./pages/signup";
 
 function App() {
     return (

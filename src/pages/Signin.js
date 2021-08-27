@@ -6,31 +6,7 @@ import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
-const LoginBox = styled.article`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const LocalLoginBox = styled.form`
-  width: 35%;
-  height: 300px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
-
-const LoginTitle = styled.h4`
-  text-align: center;
-`;
-
-const LoginInput = styled.input`
-  width: 50%;
-  height: 30px;
-  margin-top: 10px;
-`;
+import Auth, {AuthTitle, AuthInput} from '../components/Auth';
 
 const LoginBtnBox = styled.div`
   width: 51%;
@@ -70,7 +46,8 @@ const Signin = ({saveUserInfo}) => {
                 data: {
                     email: `${process.env.REACT_APP_TEMP_EMAIL}`,
                     password: `${process.env.REACT_APP_TEMP_PASSWORD}`,
-                }
+                },
+                'withCredentials': true,
             })
                 .then(({data: {data: {user_id: userId, accessToken}}}) => saveUserInfo({userId: `${userId}`, accessToken}))
                 .catch(err => err)
@@ -95,17 +72,17 @@ const Signin = ({saveUserInfo}) => {
     }, []);
 
     return (
-        <LoginBox>
-            <LocalLoginBox>
-                <LoginTitle>Learning Code 로그인</LoginTitle>
-                <LoginInput
+        <Auth>
+            <>
+                <AuthTitle>Learning Code 로그인</AuthTitle>
+                <AuthInput
                     type='text'
                     name='email'
                     onChange={handleChange}
                     onBlur={handleBlur}
                     placeholder='email'
                 />
-                <LoginInput
+                <AuthInput
                     name='password'
                     type='password'
                     onChange={handleChange}
@@ -118,8 +95,8 @@ const Signin = ({saveUserInfo}) => {
                 </LoginBtnBox>
                 {formik.touched.email && formik.errors.email && currFocused.email ? <div>{formik.errors.email}</div> : null}
                 {formik.touched.password && formik.errors.password && currFocused.password ? <div>{formik.errors.password}</div> : null}
-            </LocalLoginBox>
-        </LoginBox>
+            </>
+        </Auth>
     );
 }
 

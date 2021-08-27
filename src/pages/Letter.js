@@ -86,6 +86,7 @@ const Letter = () => {
     const {letterId} = useParams();
     const [letter, setLetter] = useState({});
     const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         setLoading(true);
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letter/${letterId}`)

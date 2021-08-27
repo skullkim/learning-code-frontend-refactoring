@@ -72,7 +72,6 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-/* eslint-disable */
 const Header = ({userInfo, logOut}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
@@ -158,7 +157,7 @@ const Header = ({userInfo, logOut}) => {
                     <NavLink to='/signup'>signup</NavLink>
                 </NavBox> :
                 <NavBox>
-                    <NavLink to='/posting'>posting</NavLink>
+                    <NavLink to={`/user/${userInfo.userId}/posting`}>posting</NavLink>
                     <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
                     <NavLink to='#' onClick={handleLogout}>logout</NavLink>
                 </NavBox>

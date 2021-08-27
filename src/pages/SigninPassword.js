@@ -1,5 +1,7 @@
+import axios from 'axios';
 import {useFormik} from 'formik';
 import {useState, useCallback} from 'react';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
@@ -10,9 +12,11 @@ const SubmitBtn = styled.button`
   height: 30px;
   margin-top: 15px;
 `;
-
+/* eslint-disable */
 const SigninPassword = () => {
     const [currFocused, setCurrFocused] = useState('');
+    const [invalidInput, setInvalidInput] = useState('');
+    const history = useHistory();
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -30,7 +34,17 @@ const SigninPassword = () => {
                 .required('비밀번호를 입력해 주세요')
                 .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
         }),
-        onSubmit: () => {}
+        onSubmit: ({email, password}) => {
+            axios.put(
+                `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/password`,
+                {email, password}
+            )
+                .then(() => {
+                    setCurrFocused('');
+                    history.push('/signin');
+                })
+                .catch(({response: {data: {errors: [message]}}}) => setInvalidInput(message));
+        }
     });
 
     const handleChange = useCallback((event) => {
@@ -46,6 +60,7 @@ const SigninPassword = () => {
     const handleSubmit = useCallback((event) => {
         event.preventDefault();
         formik.handleSubmit();
+        setInvalidInput('');
     }, []);
 
     return (
@@ -73,7 +88,7 @@ const SigninPassword = () => {
                     onBlur={handleBlur}
                     placeholder='비밀번호 확인'
                 />
-                <SubmitBtn type='submit' onSubmit={handleSubmit}>비밀번호 변경</SubmitBtn>
+                <SubmitBtn type='submit' onClick={handleSubmit}>비밀번호 변경</SubmitBtn>
                 {formik.touched.email &&
                     formik.errors.email &&
                     currFocused === 'email' ?
@@ -92,6 +107,7 @@ const SigninPassword = () => {
                     <div>{formik.errors.verifyPasswd}</div> :
                     null
                 }
+                {invalidInput && <div>{invalidInput.message}</div>}
             </>
         </Auth>
     )

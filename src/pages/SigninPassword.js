@@ -12,7 +12,7 @@ const SubmitBtn = styled.button`
   height: 30px;
   margin-top: 15px;
 `;
-/* eslint-disable */
+
 const SigninPassword = () => {
     const [currFocused, setCurrFocused] = useState('');
     const [invalidInput, setInvalidInput] = useState('');

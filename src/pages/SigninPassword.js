@@ -1,4 +1,7 @@
+import {useFormik} from 'formik';
+import {useState, useCallback} from 'react';
 import styled from 'styled-components';
+import * as Yup from 'yup';
 
 import Auth, {AuthTitle, AuthInput} from '../components/Auth';
 
@@ -9,6 +12,42 @@ const SubmitBtn = styled.button`
 `;
 
 const SigninPassword = () => {
+    const [currFocused, setCurrFocused] = useState('');
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+            verifyPasswd: '',
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .matches(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i, {message: '이메일 형식이 틀렸습니다'})
+                .required('이메일을 입력해 주세요'),
+            password: Yup.string()
+                .required('비밀번호를 입력해 주세요')
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
+            verifyPasswd: Yup.string()
+                .required('비밀번호를 입력해 주세요')
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
+        }),
+        onSubmit: () => {}
+    });
+
+    const handleChange = useCallback((event) => {
+        formik.handleChange(event);
+    }, []);
+
+    const handleBlur = useCallback((event) => {
+        const {target: {name}} = event;
+        setCurrFocused(name);
+        formik.handleBlur(event);
+    }, []);
+
+    const handleSubmit = useCallback((event) => {
+        event.preventDefault();
+        formik.handleSubmit();
+    }, []);
+
     return (
         <Auth>
             <>
@@ -16,22 +55,45 @@ const SigninPassword = () => {
                 <AuthInput
                     type='text'
                     name='email'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder='이메일'
                 />
                 <AuthInput
                     type='password'
                     name='password'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder='비밀번호'
                 />
                 <AuthInput
                     type='password'
                     name='verifyPasswd'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder='비밀번호 확인'
                 />
-                <SubmitBtn type='submit'>비밀번호 변경</SubmitBtn>
+                <SubmitBtn type='submit' onSubmit={handleSubmit}>비밀번호 변경</SubmitBtn>
+                {formik.touched.email &&
+                    formik.errors.email &&
+                    currFocused === 'email' ?
+                    <div>{formik.errors.email}</div> :
+                    null
+                }
+                {formik.touched.password &&
+                    formik.errors.password &&
+                    currFocused === 'password' ?
+                    <div>{formik.errors.password}</div> :
+                    null
+                }
+                {formik.touched.verifyPasswd &&
+                    formik.errors.verifyPasswd &&
+                    currFocused === 'verifyPasswd' ?
+                    <div>{formik.errors.verifyPasswd}</div> :
+                    null
+                }
             </>
         </Auth>
-
     )
 }
 

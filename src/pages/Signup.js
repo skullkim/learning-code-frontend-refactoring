@@ -1,5 +1,8 @@
+/* eslint-disable */
+import axios from 'axios';
 import {useFormik} from "formik";
 import {useState, useCallback} from "react";
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
@@ -10,9 +13,11 @@ const SignUpBtn = styled.button`
   height: 30px;
   margin-top: 20px;
 `;
-/* eslint-disable */
+
 const Signup = () => {
     const [currFocused, setCurrFocused] = useState('');
+    const [errReason, setErrorReason] = useState('');
+    const history = useHistory();
     const formik = useFormik({
         initialValues: {
             name: '',
@@ -31,7 +36,18 @@ const Signup = () => {
                 .required('비밀번호를 입력해 주세요')
                 .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
         }),
-        onSubmit: () => {}
+        onSubmit: ({name, email, password}) => {
+            axios.post(
+                `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/signup`,
+                {name, email, password}
+            )
+                .then(({data: {data: {message}}}) => {
+                    setErrorReason('');
+                    history.push('/');
+
+                })
+                .catch(({response:{data:{errors: [message]}}}) => setErrorReason(message));
+        }
     });
 
     const handleChange = useCallback((event) => {
@@ -51,41 +67,44 @@ const Signup = () => {
 
     return (
         <Auth>
-            <AuthTitle>Learning code 회원가입</AuthTitle>
-            <AuthInput
-                type='text'
-                name='name'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="아이디"
-            />
-            <AuthInput
-                type='text'
-                name='email'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="이메일"
-            />
-            <AuthInput
-                type='password'
-                name='password'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="비밀번호"
-            />
-            <AuthInput
-                type='password'
-                name='verifyPasswd'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder="비밀번호 확인"
-            />
-            <SignUpBtn type='submit' onClick={handleClick}>회원가입</SignUpBtn>
-            {formik.touched.name && formik.errors.name && currFocused === 'name' ? <div>{formik.errors.name}</div> : null}
-            {formik.touched.email && formik.errors.email && currFocused === 'email' ? <div>{formik.errors.email}</div> : null}
-            {formik.touched.password && formik.errors.password && currFocused === 'password' ? <div>{formik.errors.password}</div> : null}
-            {formik.touched.verifyPasswd && formik.errors.verifyPasswd && currFocused === 'verifyPasswd' ? <div>{formik.errors.verifyPasswd}</div> : null}
-            {formik.touched.verifyPasswd && currFocused === 'verifyPasswd' && formik.values.verifyPasswd !== formik.values.password ? <div>비밀번호가 일치하지 않습니다</div> : null}
+            <>
+                <AuthTitle>Learning code 회원가입</AuthTitle>
+                <AuthInput
+                    type='text'
+                    name='name'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="아이디"
+                />
+                <AuthInput
+                    type='text'
+                    name='email'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="이메일"
+                />
+                <AuthInput
+                    type='password'
+                    name='password'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="비밀번호"
+                />
+                <AuthInput
+                    type='password'
+                    name='verifyPasswd'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="비밀번호 확인"
+                />
+                <SignUpBtn type='submit' onClick={handleClick}>회원가입</SignUpBtn>
+                {formik.touched.name && formik.errors.name && currFocused === 'name' ? <div>{formik.errors.name}</div> : null}
+                {formik.touched.email && formik.errors.email && currFocused === 'email' ? <div>{formik.errors.email}</div> : null}
+                {formik.touched.password && formik.errors.password && currFocused === 'password' ? <div>{formik.errors.password}</div> : null}
+                {formik.touched.verifyPasswd && formik.errors.verifyPasswd && currFocused === 'verifyPasswd' ? <div>{formik.errors.verifyPasswd}</div> : null}
+                {formik.touched.verifyPasswd && currFocused === 'verifyPasswd' && formik.values.verifyPasswd !== formik.values.password ? <div>비밀번호가 일치하지 않습니다</div> : null}
+                {errReason && <div>{errReason.message}</div>}
+            </>
         </Auth>
     );
 }

@@ -26,7 +26,7 @@ function App() {
                 <PageHeader />
                 <Switch>
                     <Route path='/' component={Main} exact/>
-                    <Route path='/signin' component={SigninPage}/>
+                    <Route path='/signin' component={SigninPage} exact />
                     <Route path='/signin/password' component={SigninPassword}/>
                     <Route path='/signup' component={Signup} />
                     <Route path='/letters' component={Letters} />

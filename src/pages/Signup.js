@@ -1,4 +1,3 @@
-/* eslint-disable */
 import axios from 'axios';
 import {useFormik} from "formik";
 import {useState, useCallback} from "react";
@@ -41,7 +40,7 @@ const Signup = () => {
                 `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/signup`,
                 {name, email, password}
             )
-                .then(({data: {data: {message}}}) => {
+                .then(() => {
                     setErrorReason('');
                     history.push('/');
 

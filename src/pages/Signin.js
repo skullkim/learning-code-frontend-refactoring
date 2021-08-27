@@ -39,13 +39,13 @@ const Signin = ({saveUserInfo}) => {
                 .required('비밀번호를 입력해 주세요')
                 .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
         }),
-        onSubmit: () => {
+        onSubmit: ({email, password}) => {
             axios({
                 method: 'post',
                 url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/login`,
                 data: {
-                    email: `${process.env.REACT_APP_TEMP_EMAIL}`,
-                    password: `${process.env.REACT_APP_TEMP_PASSWORD}`,
+                    email: `${email}`,
+                    password: `${password}`,
                 },
                 'withCredentials': true,
             })

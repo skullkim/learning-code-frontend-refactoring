@@ -73,27 +73,29 @@ const Signin = ({saveUserInfo}) => {
 
     return (
         <Auth>
-            <AuthTitle>Learning Code 로그인</AuthTitle>
-            <AuthInput
-                type='text'
-                name='email'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder='email'
-            />
-            <AuthInput
-                name='password'
-                type='password'
-                onChange={handleChange}
-                onBlur={handleBlur}
-                placeholder='password'
-            />
-            <LoginBtnBox>
-                <LoginBtn type='submit' onClick={handleClick} >Sign in</LoginBtn>
-                <LoginBtn><Link to='/signin/password'>Find password</Link></LoginBtn>
-            </LoginBtnBox>
-            {formik.touched.email && formik.errors.email && currFocused.email ? <div>{formik.errors.email}</div> : null}
-            {formik.touched.password && formik.errors.password && currFocused.password ? <div>{formik.errors.password}</div> : null}
+            <>
+                <AuthTitle>Learning Code 로그인</AuthTitle>
+                <AuthInput
+                    type='text'
+                    name='email'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='email'
+                />
+                <AuthInput
+                    name='password'
+                    type='password'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder='password'
+                />
+                <LoginBtnBox>
+                    <LoginBtn type='submit' onClick={handleClick} >Sign in</LoginBtn>
+                    <LoginBtn><Link to='/signin/password'>Find password</Link></LoginBtn>
+                </LoginBtnBox>
+                {formik.touched.email && formik.errors.email && currFocused.email ? <div>{formik.errors.email}</div> : null}
+                {formik.touched.password && formik.errors.password && currFocused.password ? <div>{formik.errors.password}</div> : null}
+            </>
         </Auth>
     );
 }

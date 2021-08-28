@@ -115,7 +115,6 @@ const Header = ({userInfo, logOut}) => {
 
     const handleLogout = useCallback((event) => {
         event.preventDefault();
-        logOut();
         axios({
             method: 'delete',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
@@ -124,10 +123,15 @@ const Header = ({userInfo, logOut}) => {
             },
             withCredentials: true,
         })
-            .then(() => history.push('/'))
+            .then(() => {
+                localStorage.removeItem('userInfo');
+                logOut();
+                history.push('/');
+            })
             .catch(err => err);
     }, [userInfo]);
-
+    /*eslint-disable*/
+    console.log(userInfo);
     return (
         <HeaderBox>
             <Link to='/letters'><LinkToLetters /></Link>

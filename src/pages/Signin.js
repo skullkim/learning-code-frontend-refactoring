@@ -49,7 +49,13 @@ const Signin = ({saveUserInfo}) => {
                 },
                 'withCredentials': true,
             })
-                .then(({data: {data: {user_id: userId, accessToken}}}) => saveUserInfo({userId: `${userId}`, accessToken}))
+                .then(({data: {data: {user_id: userId, accessToken}}}) => {
+                    window.localStorage.setItem('userInfo', JSON.stringify({
+                        userId: `${userId}`,
+                        accessToken
+                    }));
+                    saveUserInfo({userId: `${userId}`, accessToken})
+                })
                 .catch(err => err)
         },
     });
@@ -71,6 +77,11 @@ const Signin = ({saveUserInfo}) => {
         formik.handleBlur(event);
     }, []);
 
+    /*eslint-disable*/
+    console.log(
+        'local',
+        JSON.parse(localStorage.getItem('userInfo'))
+    );
     return (
         <Auth>
             <>

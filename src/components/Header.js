@@ -6,6 +6,10 @@ import { ImSearch } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import reissuingToken from "../lib/reissuanceToken";
+
+// import IsLoggedIn from "./IsLoggedIn";
+
 const HeaderBox = styled.header`
   width: 100%;
   height: 50px;
@@ -79,7 +83,6 @@ const Header = ({userInfo, logOut}) => {
         target: '',
     });
     const history = useHistory();
-
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
@@ -128,7 +131,13 @@ const Header = ({userInfo, logOut}) => {
                 logOut();
                 history.push('/');
             })
-            .catch(err => err);
+            .catch(err => {
+                if(err.response.status !== 403) {
+                    return err;
+                }
+                reissuingToken();
+                return handleLogout(event);
+            });
     }, [userInfo]);
     /*eslint-disable*/
     console.log(userInfo);

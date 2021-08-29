@@ -65,21 +65,22 @@ const Posting = () => {
         setLoading(true);
         IsLoggedIn()
             .then((result) => {
+                console.log(result);
                 if(!result) {
                     return history.push('/');
                 }
                 setLoggedIn(result);
             })
-            .catch((b) => {
-                console.log(b);
+            .catch((err) => {
+                console.log('a', err);
             });
 
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/letters/categories`)
             .then(({data: {data}}) => {
                 setPostingInfo(data)
-                setLoading(false);
             })
             .catch(err => err);
+        setLoading(false);
     }, []);
 
     if(loading) {

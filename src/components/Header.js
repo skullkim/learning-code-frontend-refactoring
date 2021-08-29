@@ -1,14 +1,12 @@
 import axios from 'axios';
-import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import reissuingToken from "../lib/reissuanceToken";
-
-// import IsLoggedIn from "./IsLoggedIn";
+import Api from "../lib/customAxios";
+import getUserInfo from "../lib/getUserInfo";
 
 const HeaderBox = styled.header`
   width: 100%;
@@ -76,12 +74,15 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-const Header = ({userInfo, logOut}) => {
+const Header = () => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
         target: '',
     });
+    const [userInfo, setUserInfo] = useState(getUserInfo());
+    /*eslint-disable*/
+    console.log(userInfo);
     const history = useHistory();
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
@@ -118,7 +119,7 @@ const Header = ({userInfo, logOut}) => {
 
     const handleLogout = useCallback((event) => {
         event.preventDefault();
-        axios({
+        Api({
             method: 'delete',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
             headers: {
@@ -127,20 +128,19 @@ const Header = ({userInfo, logOut}) => {
             withCredentials: true,
         })
             .then(() => {
-                localStorage.removeItem('userInfo');
-                logOut();
+                localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
+                setUserInfo('')
                 history.push('/');
             })
-            .catch(err => {
-                if(err.response.status !== 403) {
-                    return err;
-                }
-                reissuingToken();
-                return handleLogout(event);
+            .catch(() => {
+                console.log(getUserInfo());
+                localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
+                console.log(getUserInfo());
+                setUserInfo('')
+                history.push('/');
             });
     }, [userInfo]);
-    /*eslint-disable*/
-    console.log(userInfo);
+
     return (
         <HeaderBox>
             <Link to='/letters'><LinkToLetters /></Link>
@@ -164,7 +164,7 @@ const Header = ({userInfo, logOut}) => {
                 />
                 <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>
-            {!userInfo.userId ?
+            {!userInfo || (userInfo && !userInfo.userId) ?
                 <NavBox>
                     <NavLink to='/signin'>login</NavLink>
                     <NavLink to='/signup'>signup</NavLink>
@@ -178,10 +178,5 @@ const Header = ({userInfo, logOut}) => {
         </HeaderBox>
     );
 }
-
-Header.propTypes = {
-    userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
-    logOut: PropTypes.func.isRequired,
-};
 
 export default Header;

@@ -26,8 +26,8 @@ const IsLoggedIn = async () => {
         if(err.response.status !== 403) {
             return loggedIn;
         }
-        reissuingToken();
-        return loggedIn;
+        await reissuingToken();
+        loggedIn = true;
     }
     return loggedIn;
 }

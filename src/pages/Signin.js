@@ -1,6 +1,6 @@
 import axios from 'axios';
 import {useFormik} from 'formik';
-import ProTypes from 'prop-types';
+// import ProTypes from 'prop-types';
 import {useState, useCallback} from "react";
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
@@ -21,7 +21,7 @@ const LoginBtn = styled.button`
   height: 20px;
 `;
 
-const Signin = ({saveUserInfo}) => {
+const Signin = () => {
     const [currFocused, setCurrFocused] = useState({
         email: false,
         password: false,
@@ -50,11 +50,11 @@ const Signin = ({saveUserInfo}) => {
                 'withCredentials': true,
             })
                 .then(({data: {data: {user_id: userId, accessToken}}}) => {
-                    window.localStorage.setItem('userInfo', JSON.stringify({
+                    localStorage.setItem(`${process.env.REACT_APP_USER_INFO}`, JSON.stringify({
                         userId: `${userId}`,
                         accessToken
                     }));
-                    saveUserInfo({userId: `${userId}`, accessToken})
+                    // saveUserInfo({userId: `${userId}`, accessToken})
                 })
                 .catch(err => err)
         },
@@ -111,8 +111,8 @@ const Signin = ({saveUserInfo}) => {
     );
 }
 
-Signin.propTypes = {
-    saveUserInfo: ProTypes.func.isRequired,
-};
+// Signin.propTypes = {
+//     saveUserInfo: ProTypes.func.isRequired,
+// };
 
 export default Signin;

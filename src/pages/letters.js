@@ -38,7 +38,7 @@ const Letters = () => {
             <Category />
             <ResultBox>
                 {letters.length && letters.map(({id, title, main_category: mainCategory}) => (
-                    <LetterList id={id} title={title} mainCategory={mainCategory} />
+                    <LetterList key={id} id={id} title={title} mainCategory={mainCategory} />
                 ))}
             </ResultBox>
         </LettersPageBox>

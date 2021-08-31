@@ -20,15 +20,21 @@ const ProfileBox = styled.section`
 `;
 
 const ProfileImg = styled.img`
-  height: 50px;
-  width: 30px;
+  height: 80px;
+  width: 70px;
   margin-right: 2vw;
 `;
 
 const ProfileInfo = styled.div`
-  width: 30px;
+  width: 100px;
   height: 50px;
   margin-right: 7vw;
+  display: flex;
+  flex-direction: column;
+`;
+
+const EditProfile = styled(Link)`
+  width: 300px;
 `;
 
 const UserName = styled.p``;
@@ -71,8 +77,8 @@ const Profile = () => {
                     <ProfileImg src={`${process.env.REACT_APP_SERVER_ORIGIN}${profile.profileImg}`} alt='profile image'/>
                     <ProfileInfo>
                         <UserName>p</UserName>
-                        <Link to='#'>Edit profile</Link>
-                        <Link to='#'>change password</Link>
+                        <EditProfile to='#'>Edit profile</EditProfile>
+                        <EditProfile to='#'>change password</EditProfile>
                     </ProfileInfo>
                 </ProfileBox>
             }

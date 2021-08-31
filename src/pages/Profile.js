@@ -51,11 +51,10 @@ const ListTitle = styled.h4``;
 const Posting = styled.div`
   height: 80px;
   width: 80%;
-  //background-color: red;
   margin-bottom: 20px;
 `;
 
-const PostingTitle = styled.h5``;
+const Title = styled.h5``;
 
 const PostingInfo = styled.div`
     width: 100%;
@@ -73,7 +72,19 @@ const RemoveBtn = styled.button`
   font-size: 16.5px;
 `;
 
-const CommentBox = styled(ProfileBox)``;
+const CommentBox = styled(ProfileBox)`
+  justify-content: flex-start;
+  margin-left: 5vw;
+  display: flex;
+  flex-direction: column;
+`;
+
+const Comment = styled.strong`
+  height: 40px;
+  width: 80%;
+  margin-bottom: 20px;
+  background-color: red;
+`;
 
 const Profile = () => {
 
@@ -133,7 +144,7 @@ const Profile = () => {
                     profile.postings.map(({id, title, main_category: mainCategory}) => (
                         <Posting key={id}>
                             <Link to={`/letter/${id}`}>
-                                <PostingTitle>{title}</PostingTitle>
+                                <Title>{title}</Title>
                             </Link>
                             <PostingInfo>
                                 <Category>{mainCategory}</Category>
@@ -144,7 +155,10 @@ const Profile = () => {
                     ))
                 }
             </PostingBox>
-            <CommentBox />
+            <CommentBox>
+                <Title>내 덧글</Title>
+                <Comment>saa</Comment>
+            </CommentBox>
         </MainBox>
     );
 }

@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import axios from 'axios';
 import {useFormik} from "formik";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
 import {useParams} from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
@@ -125,7 +125,7 @@ const Letter = () => {
         validationSchema: Yup.object({
             comment: Yup.string().required('덧글을 입력해 주세요')
         }),
-        onSubmit: () => {}
+        onSubmit: ({comment}) => {console.log(comment)}
     });
 
     useEffect(() => {
@@ -139,6 +139,15 @@ const Letter = () => {
     if(loading){
         return (<div>loading...</div>);
     }
+
+    const handleChange = useCallback((event) => {
+        formik.handleChange(event);
+    }, []);
+
+    const handleClick = useCallback((event) => {
+        event.preventDefault();
+        formik.handleSubmit();
+    }, []);
 
     return (
         <LetterBox>
@@ -173,8 +182,13 @@ const Letter = () => {
             </PostingBox>
             {userInfo.userId &&
                 <WriteCommentBox>
-                    <CommentInput />
-                    <CommentSubmit>작성</CommentSubmit>
+                    <CommentInput
+                        type='text'
+                        name='comment'
+                        placeholder='댓글'
+                        onChange={handleChange}
+                    />
+                    <CommentSubmit type='submit' onClick={handleClick}>작성</CommentSubmit>
                 </WriteCommentBox>
             }
             {letter.comments && letter.comments.length ?

@@ -1,17 +1,20 @@
+import getUserInfo from "../lib/getUserInfo";
+
 const SAVE_USER_INFO = 'auth/SAVE_USER_INFO';
+
+const storageUserInfo = getUserInfo();
 
 const initialState = {
     userInfo: {
-        userId: '',
-        accessToken: '',
+        userId: storageUserInfo ? storageUserInfo.userId : '',
+        accessToken: storageUserInfo ? storageUserInfo.accessToken : '',
     },
 };
 
-export const saveUserInfo = (userInfo = initialState.userInfo) => ({
+export const saveUserInfo = (userInfo = {userId: '', accessToken: ''}) => ({
     type: SAVE_USER_INFO,
     userInfo
 });
-
 
 function authReducer(state = initialState, action) {
     switch (action.type) {

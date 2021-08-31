@@ -6,6 +6,10 @@ import { ImSearch } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+// import getUserInfo from "../lib/getUserInfo";
+
+// import getUserInfo from "../lib/getUserInfo";
+
 const HeaderBox = styled.header`
   width: 100%;
   height: 50px;
@@ -72,20 +76,22 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-/* eslint-disable */
-const Header = ({userInfo, logOut}) => {
+const Header = ({userInfo, setUserInfo}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
         target: '',
     });
+    // const [userInfo, setUserInfo] = useState(getUserInfo());
+    /*eslint-disable*/
+    console.log(userInfo);
     const history = useHistory();
-
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
             .then(({data: {data}}) => setHeaderInfo(data))
             .catch(err => err);
     }, []);
+
 
     const handleChange = useCallback(({target: {name, value}}) => {
         if(!name || !value) return;
@@ -116,7 +122,6 @@ const Header = ({userInfo, logOut}) => {
 
     const handleLogout = useCallback((event) => {
         event.preventDefault();
-        logOut();
         axios({
             method: 'delete',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
@@ -125,8 +130,14 @@ const Header = ({userInfo, logOut}) => {
             },
             withCredentials: true,
         })
-            .then(() => history.push('/'))
-            .catch(err => err);
+            .then(() => {
+                localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
+                setUserInfo();
+                history.push('/');
+            })
+            .catch((err) => {
+                return err;
+            });
     }, [userInfo]);
 
     return (
@@ -158,7 +169,7 @@ const Header = ({userInfo, logOut}) => {
                     <NavLink to='/signup'>signup</NavLink>
                 </NavBox> :
                 <NavBox>
-                    <NavLink to='/posting'>posting</NavLink>
+                    <NavLink to={`/user/${userInfo.userId}/posting`}>posting</NavLink>
                     <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
                     <NavLink to='#' onClick={handleLogout}>logout</NavLink>
                 </NavBox>
@@ -168,8 +179,8 @@ const Header = ({userInfo, logOut}) => {
 }
 
 Header.propTypes = {
-    userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
-    logOut: PropTypes.func.isRequired,
+    userInfo: PropTypes.objectOf(PropTypes.string),
+    setUserInfo: PropTypes.func,
 };
 
 export default Header;

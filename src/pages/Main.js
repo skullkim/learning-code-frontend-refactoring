@@ -33,6 +33,7 @@ const Main = () => {
             .then(({data: {data}}) => setImageUrls(data))
             .catch(err => err);
     }, []);
+
     return (
         <>
             <MainBox>

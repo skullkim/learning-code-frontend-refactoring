@@ -2,7 +2,8 @@ import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 
 import Footer from "./components/Footer";
 import GlobalStyle from './components/GlobalStyle';
-import {PageHeader} from './container/HeaderContainer';
+// import Header from "./components/Header";
+import {PageHeader} from "./container/HeaderContainer";
 import {SigninPage} from "./container/signinContainer";
 import {SearchResultPage} from './container/startSearchContainer';
 import Book from './pages/Book';
@@ -10,7 +11,7 @@ import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";
 import Main from './pages/Main';
 import NotFound from "./pages/NotFound";
-import Posting from "./pages/Posting";
+import NewPosting from "./pages/Posting";
 import Profile from "./pages/Profile";
 import SigninPassword from "./pages/SigninPassword";
 import Signup from "./pages/Signup";
@@ -32,9 +33,9 @@ function App() {
                     <Route path='/letters' component={Letters} />
                     <Route path='/letter/:letterId' component={Letter} />
                     <Route path='/books/:bookCategory' component={Book} />
-                    <Route path='/user/:userId/my-info' component={UserInfo}/>
-                    <Route path='/user/:userId/profile' component={Profile}/>
-                    <Route path='/user/:userId/posting' component={Posting} exact/>
+                    <Route path='/user/:userId/my-info' component={UserInfo} />
+                    <Route path='/user/:userId/profile' component={Profile} />
+                    <Route path='/user/:userId/posting' component={NewPosting} />
                     <Route path='/user/:userId/posting/:postingId' component={EditPosting} exact/>
                     <Route path='/user/:userId/password' component={UserPassword} exact />
                     <Route path='/search/:category' component={SearchResultPage} />

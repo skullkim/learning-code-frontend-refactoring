@@ -11,9 +11,8 @@ import EditPosting from "./pages/EditPosting";
 import Letter from "./pages/Letter";
 import Main from './pages/Main';
 import NotFound from "./pages/NotFound";
-import Posting from "./pages/Posting";
+import NewPosting from "./pages/Posting";
 import Profile from "./pages/Profile";
-// import Signin from "./pages/Signin";
 import SigninPassword from "./pages/SigninPassword";
 import Signup from "./pages/Signup";
 import UserInfo from "./pages/UserInfo";
@@ -36,7 +35,7 @@ function App() {
                     <Route path='/books/:bookCategory' component={Book} />
                     <Route path='/user/:userId/my-info' component={UserInfo} />
                     <Route path='/user/:userId/profile' component={Profile} />
-                    <Route path='/user/:userId/posting' component={Posting} />
+                    <Route path='/user/:userId/posting' component={NewPosting} />
                     <Route path='/user/:userId/posting/:postingId' component={EditPosting} exact/>
                     <Route path='/user/:userId/password' component={UserPassword} exact />
                     <Route path='/search/:category' component={SearchResultPage} />

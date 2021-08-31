@@ -4,6 +4,7 @@ import { useFormik } from "formik";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import * as Yup from 'yup';
 
 
 const PostingBox = styled.main`
@@ -87,6 +88,11 @@ const Posting = ({userInfo, history}) => {
             tags: [],
             imgs: [],
         },
+        validationSchema: Yup.object({
+            title: Yup.string().max(45, '제목을 45자 이내로 적어주세요').required('제목이 비어있습니다'),
+            posting: Yup.string().required('본문이 비어있습니다'),
+            category: Yup.string().required('카테고리를 선택해 주세요'),
+        }),
         onSubmit: ({title, posting, category, tags, imgs}) => {
             const formData = new FormData();
             formData.append('title', title);
@@ -157,12 +163,14 @@ const Posting = ({userInfo, history}) => {
                     placeholder='제목'
                     onChange={handleChange}
                 />
+                {formik.touched.title && formik.errors.title ? <div>{formik.errors.title}</div> : null}
                 <CategorySelection onChange={handleChange} name='category'>
                     <option value="">=== 글 카테고리 선택 ===</option>
                     {postingInfo.length && postingInfo.map(({key, main_category: category}) => (
                         <option key={key} value={category}>{category}</option>
                     ))}
                 </CategorySelection>
+                {formik.touched.title && formik.errors.category ? <div>{formik.errors.category}</div> : null}
                 <TagSelection name='tag'>
                     {postingInfo.length && formik.values.category &&
                     postingInfo
@@ -186,6 +194,7 @@ const Posting = ({userInfo, history}) => {
                         ))}
                 </TagSelection>
                 <PostingContext onChange={handleChange} maxLength='5000' name="posting"/>
+                {formik.touched.posting && formik.errors.posting ? <div>{formik.errors.posting}</div> : null}
                 <PostingLimit>{`${postingLimit}/5000`}</PostingLimit>
                 <SelectImgBox>
 

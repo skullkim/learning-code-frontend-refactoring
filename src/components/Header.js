@@ -1,12 +1,14 @@
 import axios from 'axios';
+import PropTypes from 'prop-types';
 import { useEffect, useState, useCallback } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { ImSearch } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
-import Api from "../lib/customAxios";
-import getUserInfo from "../lib/getUserInfo";
+// import getUserInfo from "../lib/getUserInfo";
+
+// import getUserInfo from "../lib/getUserInfo";
 
 const HeaderBox = styled.header`
   width: 100%;
@@ -74,13 +76,13 @@ const NavLink = styled(Link)`
   margin-right: 10px;
 `;
 
-const Header = () => {
+const Header = ({userInfo, setUserInfo}) => {
     const [headerInfo, setHeaderInfo] = useState({});
     const [searchTarget, setSearchTarget] = useState({
         category: '',
         target: '',
     });
-    const [userInfo, setUserInfo] = useState(getUserInfo());
+    // const [userInfo, setUserInfo] = useState(getUserInfo());
     /*eslint-disable*/
     console.log(userInfo);
     const history = useHistory();
@@ -89,6 +91,7 @@ const Header = () => {
             .then(({data: {data}}) => setHeaderInfo(data))
             .catch(err => err);
     }, []);
+
 
     const handleChange = useCallback(({target: {name, value}}) => {
         if(!name || !value) return;
@@ -119,7 +122,7 @@ const Header = () => {
 
     const handleLogout = useCallback((event) => {
         event.preventDefault();
-        Api({
+        axios({
             method: 'delete',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
             headers: {
@@ -129,15 +132,11 @@ const Header = () => {
         })
             .then(() => {
                 localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
-                setUserInfo('')
+                setUserInfo();
                 history.push('/');
             })
-            .catch(() => {
-                console.log(getUserInfo());
-                localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
-                console.log(getUserInfo());
-                setUserInfo('')
-                history.push('/');
+            .catch((err) => {
+                return err;
             });
     }, [userInfo]);
 
@@ -164,7 +163,7 @@ const Header = () => {
                 />
                 <SearchBtn onClick={handleSearchClick} ><SearchLogo /></SearchBtn>
             </SearchBox>
-            {!userInfo || (userInfo && !userInfo.userId) ?
+            {!userInfo.userId ?
                 <NavBox>
                     <NavLink to='/signin'>login</NavLink>
                     <NavLink to='/signup'>signup</NavLink>
@@ -178,5 +177,10 @@ const Header = () => {
         </HeaderBox>
     );
 }
+
+Header.propTypes = {
+    userInfo: PropTypes.objectOf(PropTypes.string),
+    setUserInfo: PropTypes.func,
+};
 
 export default Header;

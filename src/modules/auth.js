@@ -1,13 +1,13 @@
+import getUserInfo from "../lib/getUserInfo";
+
 const SAVE_USER_INFO = 'auth/SAVE_USER_INFO';
 
-const localUserInfo = JSON.parse(
-    localStorage.getItem('userInfo')
-);
+const storageUserInfo = getUserInfo();
 
 const initialState = {
     userInfo: {
-        userId:  localUserInfo ? localUserInfo.userId : '',
-        accessToken:  localUserInfo ? localUserInfo.accessToken : '',
+        userId: storageUserInfo ? storageUserInfo.userId : '',
+        accessToken: storageUserInfo ? storageUserInfo.accessToken : '',
     },
 };
 

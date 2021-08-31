@@ -4,8 +4,8 @@ import {connect} from "react-redux";
 import Header from '../components/Header';
 import {saveUserInfo} from "../modules/auth";
 
-const HeaderContainer = ({userInfo, saveUserInfo: logOut}) => {
-    return <Header userInfo={userInfo} logOut={logOut} />;
+const HeaderContainer = ({userInfo, saveUserInfo: setUserInfo}) => {
+    return <Header userInfo={userInfo} setUserInfo={setUserInfo} />;
 }
 
 HeaderContainer.propTypes = {

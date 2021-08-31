@@ -34,7 +34,7 @@ const WritingBox = styled.section`
 
 const Writing = styled.textarea`
   width: 100%;
-  height: auto;
+  height: 500px;
   background-color: transparent;
   border: 0;
 `;

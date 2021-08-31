@@ -65,12 +65,21 @@ const Category = styled.strong`
     margin-right: 1vw;
 `;
 
+const RemoveBtn = styled.button`
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  font-size: 16.5px;
+`;
+
 const CommentBox = styled(ProfileBox)``;
 
 const Profile = () => {
 
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(false);
+    const [reLoading, setReloading] = useState(false);
     const [userInfo] = useState(getUserInfo());
 
     useEffect(() => {
@@ -88,10 +97,22 @@ const Profile = () => {
                 setLoading(false);
             })
             .catch(err => err);
-    }, []);
+    }, [reLoading]);
 
     if(loading) {
         return <div>loading...</div>
+    }
+
+    const handleClick = (id) => {
+        axios({
+            method: 'delete',
+            url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/posting/${id}`,
+            headers: {
+                'Authorization': `Bearer ${userInfo.accessToken}`,
+            }
+        })
+            .then(() => setReloading(!reLoading))
+            .catch(err => err);
     }
 
     return (
@@ -117,7 +138,7 @@ const Profile = () => {
                             <PostingInfo>
                                 <Category>{mainCategory}</Category>
                                 <Link to={`/user/${userInfo.userId}/posting/${id}`}>수정</Link>
-                                <Link to='#'>삭제</Link>
+                                <RemoveBtn onClick={() => handleClick(id)}>삭제</RemoveBtn>
                             </PostingInfo>
                         </Posting>
                     ))

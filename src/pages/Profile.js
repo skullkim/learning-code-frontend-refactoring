@@ -39,7 +39,31 @@ const EditProfile = styled(Link)`
 
 const UserName = styled.p``;
 
-const PostingBox = styled(ProfileBox)``;
+const PostingBox = styled(ProfileBox)`
+  justify-content: flex-start;
+  margin-left: 5vw;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ListTitle = styled.h4``;
+
+const Posting = styled.div`
+  height: 80px;
+  width: 80%;
+  //background-color: red;
+  margin-bottom: 20px;
+`;
+
+const PostingTitle = styled.h5``;
+
+const PostingInfo = styled.div`
+    width: 100%;
+`;
+
+const Category = styled.strong`
+    margin-right: 1vw;
+`;
 
 const CommentBox = styled(ProfileBox)``;
 
@@ -82,7 +106,23 @@ const Profile = () => {
                     </ProfileInfo>
                 </ProfileBox>
             }
-            <PostingBox />
+            <PostingBox>
+                <ListTitle>내 글</ListTitle>
+                {profile && profile.postings &&
+                    profile.postings.map(({id, title, main_category: mainCategory}) => (
+                        <Posting key={id}>
+                            <Link to={`/letter/${id}`}>
+                                <PostingTitle>{title}</PostingTitle>
+                            </Link>
+                            <PostingInfo>
+                                <Category>{mainCategory}</Category>
+                                <Link to={`/user/${userInfo.userId}/posting/${id}`}>수정</Link>
+                                <Link to='#'>삭제</Link>
+                            </PostingInfo>
+                        </Posting>
+                    ))
+                }
+            </PostingBox>
             <CommentBox />
         </MainBox>
     );

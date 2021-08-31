@@ -116,6 +116,7 @@ const Letter = () => {
     const {letterId} = useParams();
     const [letter, setLetter] = useState({});
     const [loading, setLoading] = useState(false);
+    const [reloading, setReloading] = useState(false);
     const [userInfo] = useState(getUserInfo());
 
     const formik = useFormik({
@@ -125,7 +126,18 @@ const Letter = () => {
         validationSchema: Yup.object({
             comment: Yup.string().required('덧글을 입력해 주세요')
         }),
-        onSubmit: ({comment}) => {console.log(comment)}
+        onSubmit: ({comment}) => {
+            axios({
+                method: 'post',
+                url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/posting/${letterId}/comment`,
+                headers: {
+                    'Authorization': `Bearer ${userInfo.accessToken}`,
+                },
+                data: {comment}
+            })
+                .then(() => setReloading(!reloading))
+                .catch(err => err)
+        }
     });
 
     useEffect(() => {
@@ -134,7 +146,7 @@ const Letter = () => {
             .then(({data: {data}}) =>  setLetter(data))
             .catch(err => err);
         setLoading(false);
-    },[]);
+    },[reloading]);
 
     if(loading){
         return (<div>loading...</div>);
@@ -180,7 +192,7 @@ const Letter = () => {
                     <></>
                 }
             </PostingBox>
-            {userInfo.userId &&
+            {userInfo && userInfo.userId &&
                 <WriteCommentBox>
                     <CommentInput
                         type='text'

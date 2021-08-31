@@ -1,4 +1,3 @@
-/*eslint-disable*/
 import axios from 'axios';
 import {useFormik} from "formik";
 import {useState, useEffect, useCallback} from "react";

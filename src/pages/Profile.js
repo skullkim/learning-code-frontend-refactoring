@@ -80,11 +80,20 @@ const CommentBox = styled(ProfileBox)`
   flex-direction: column;
 `;
 
-const Comment = styled.strong`
+const Comment = styled.div`
   height: 40px;
   width: 80%;
   margin-bottom: 20px;
-  background-color: red;
+`;
+
+const CommentContext = styled.textarea`
+  width: 60%;
+  height: 35px;
+  border: 0;
+  outline: none;
+  resize: none;  
+  background-color: transparent;
+  overflow: scroll;
 `;
 
 const Profile = () => {
@@ -158,7 +167,12 @@ const Profile = () => {
             </PostingBox>
             <CommentBox>
                 <Title>내 덧글</Title>
-                <Comment>saa</Comment>
+                {profile && profile.comments &&
+                    profile.comments.map(({id, comment}) => (
+                        <Comment key={id}>
+                            <CommentContext value={comment ?? ''} readOnly/>
+                        </Comment>
+                    ))}
             </CommentBox>
         </MainBox>
     );

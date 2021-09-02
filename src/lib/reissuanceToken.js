@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-/*eslint-disable*/
 const reissuingToken = async () => {
     const {userId} = JSON.parse(
         localStorage.getItem('userInfo')
@@ -11,14 +10,13 @@ const reissuingToken = async () => {
         withCredentials: true,
     })
         .then(({data: {data: {access_token: accessToken}}}) => {
+            localStorage.removeItem('userInfo');
             localStorage.setItem('userInfo', JSON.stringify({
                 userId: `${userId}`,
                 accessToken,
             }));
         })
-        .catch(error => {
-            console.log('aaa', error);
-        });
+        .catch(error => error);
 }
 
 export default reissuingToken;

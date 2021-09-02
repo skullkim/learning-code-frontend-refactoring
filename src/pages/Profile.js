@@ -3,6 +3,7 @@ import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
+import Api from "../lib/customAxios";
 import getUserInfo from "../lib/getUserInfo";
 
 const MainBox = styled.main`
@@ -95,7 +96,7 @@ const Profile = () => {
 
     useEffect(() => {
         setLoading(true);
-        axios({
+        Api({
             method: 'get',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/profile`,
             headers: {

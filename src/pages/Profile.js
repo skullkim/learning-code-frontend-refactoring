@@ -218,7 +218,14 @@ const Profile = () => {
                         </Comment>
                     ))}
             </CommentBox>
-            {commentId && <EditComment closeModal={setCommentId}/>}
+            {commentId &&
+                <EditComment
+                    closeModal={setCommentId}
+                    commentId={commentId}
+                    reloading={reLoading}
+                    setReloading={setReloading}
+                />
+            }
         </MainBox>
     );
 }

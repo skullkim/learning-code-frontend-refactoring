@@ -6,6 +6,7 @@ import { ImSearch } from 'react-icons/im';
 import { Link, useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 
+import Api from "../lib/customAxios";
 // import getUserInfo from "../lib/getUserInfo";
 
 // import getUserInfo from "../lib/getUserInfo";
@@ -122,7 +123,7 @@ const Header = ({userInfo, setUserInfo}) => {
 
     const handleLogout = useCallback((event) => {
         event.preventDefault();
-        axios({
+        Api({
             method: 'delete',
             url: `${process.env.REACT_APP_SERVER_ORIGIN}/authentication/logout`,
             headers: {
@@ -135,8 +136,12 @@ const Header = ({userInfo, setUserInfo}) => {
                 setUserInfo();
                 history.push('/');
             })
-            .catch((err) => {
-                return err;
+            .catch(() => {
+                setTimeout(() => {
+                    localStorage.removeItem(`${process.env.REACT_APP_USER_INFO}`);
+                }, 100);
+                setUserInfo();
+                history.push('/');
             });
     }, [userInfo]);
 

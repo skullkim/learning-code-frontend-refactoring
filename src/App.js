@@ -35,7 +35,7 @@ function App() {
                     <Route path='/books/:bookCategory' component={Book} />
                     <Route path='/user/:userId/my-info' component={UserInfo} />
                     <Route path='/user/:userId/profile' component={Profile} />
-                    <Route path='/user/:userId/posting' component={NewPosting} />
+                    <Route path='/user/:userId/posting' component={NewPosting} exact />
                     <Route path='/user/:userId/posting/:postingId' component={EditPosting} exact/>
                     <Route path='/user/:userId/password' component={UserPassword} exact />
                     <Route path='/search/:category' component={SearchResultPage} />

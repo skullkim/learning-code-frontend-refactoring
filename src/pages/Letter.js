@@ -194,8 +194,8 @@ const Letter = () => {
             {userInfo && userInfo.userId &&
                 <WriteCommentBox>
                     <CommentInput
-                        type='text'
                         name='comment'
+                        type='text'
                         placeholder='댓글'
                         onChange={handleChange}
                     />

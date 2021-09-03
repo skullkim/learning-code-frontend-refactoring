@@ -1,9 +1,10 @@
-import axios from 'axios';
+/*eslint-disable*/
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
 import Api from "../lib/customAxios";
+import EditComment from '../components/modal/EditComment';
 import getUserInfo from "../lib/getUserInfo";
 
 const MainBox = styled.main`
@@ -84,6 +85,8 @@ const Comment = styled.div`
   height: 40px;
   width: 80%;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
 `;
 
 const CommentContext = styled.textarea`
@@ -96,11 +99,14 @@ const CommentContext = styled.textarea`
   overflow: scroll;
 `;
 
+const CommentBtn = styled.button``;
+
 const Profile = () => {
 
     const [profile, setProfile] = useState({});
     const [loading, setLoading] = useState(false);
     const [reLoading, setReloading] = useState(false);
+    const [commentId, setCommentId] = useState('');
     const [userInfo] = useState(getUserInfo());
 
     useEffect(() => {
@@ -124,17 +130,38 @@ const Profile = () => {
         return <div>loading...</div>
     }
 
-    const handleClick = (id) => {
-        axios({
-            method: 'delete',
-            url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/posting/${id}`,
-            headers: {
-                'Authorization': `Bearer ${userInfo.accessToken}`,
-            }
-        })
-            .then(() => setReloading(!reLoading))
-            .catch(err => err);
+    const handleClick = ({target: {name}}, id) => {
+        switch(name) {
+            case 'removePosting':
+                Api({
+                    method: 'delete',
+                    url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/posting/${id}`,
+                    headers: {
+                        'Authorization': `Bearer ${userInfo.accessToken}`,
+                    }
+                })
+                    .then(() => setReloading(!reLoading))
+                    .catch(err => err);
+                break;
+            case 'deleteComment':
+                Api({
+                    method: 'delete',
+                    url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/comment/${id}`,
+                    headers: {
+                        'Authorization': `Bearer ${userInfo.accessToken}`,
+                    }
+                })
+                  .then(() => setReloading(!reLoading))
+                  .catch(err => err);
+                break;
+            case 'editComment':
+                setCommentId(id + '');
+                break;
+            default:
+                throw new Error();
+        }
     }
+
 
     return (
         <MainBox>
@@ -159,7 +186,12 @@ const Profile = () => {
                             <PostingInfo>
                                 <Category>{mainCategory}</Category>
                                 <Link to={`/user/${userInfo.userId}/posting/${id}`}>수정</Link>
-                                <RemoveBtn onClick={() => handleClick(id)}>삭제</RemoveBtn>
+                                <RemoveBtn
+                                  name='removePosting'
+                                  onClick={(event) => handleClick(event, id)}
+                                >
+                                    삭제
+                                </RemoveBtn>
                             </PostingInfo>
                         </Posting>
                     ))
@@ -171,9 +203,22 @@ const Profile = () => {
                     profile.comments.map(({id, comment}) => (
                         <Comment key={id}>
                             <CommentContext value={comment ?? ''} readOnly/>
+                            <CommentBtn
+                              name='editComment'
+                              onClick={(event) => handleClick(event, id)}
+                            >
+                                수정
+                            </CommentBtn>
+                            <CommentBtn
+                              name='deleteComment'
+                              onClick={(event) => handleClick(event, id)}
+                            >
+                                삭제
+                            </CommentBtn>
                         </Comment>
                     ))}
             </CommentBox>
+            {commentId && <EditComment closeModal={setCommentId}/>}
         </MainBox>
     );
 }

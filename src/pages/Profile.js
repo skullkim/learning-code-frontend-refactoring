@@ -170,7 +170,7 @@ const Profile = () => {
                     <ProfileImg src={`${process.env.REACT_APP_SERVER_ORIGIN}${profile.profileImg}`} alt='profile image'/>
                     <ProfileInfo>
                         <UserName>p</UserName>
-                        <EditProfile to='#'>Edit profile</EditProfile>
+                        <EditProfile to={`/user/${userInfo.userId}/my-info`}>Edit profile</EditProfile>
                         <EditProfile to='#'>change password</EditProfile>
                     </ProfileInfo>
                 </ProfileBox>

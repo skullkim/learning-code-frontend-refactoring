@@ -1,5 +1,22 @@
+import {useHistory, useParams} from 'react-router-dom';
+
+import Posting from '../components/Posting';
+import getUserInfo from '../lib/getUserInfo';
+
 const EditPosting = () => {
-    return (<div>edit posting</div>)
+    const history = useHistory();
+    const userInfo = getUserInfo();
+    const {postingId} = useParams();
+    /*eslint-disable*/
+    console.log(postingId);
+    return (
+        <Posting
+            history={history}
+            userInfo={userInfo}
+            postingId={postingId}
+            edit
+        />
+    );
 }
 
 export default EditPosting;

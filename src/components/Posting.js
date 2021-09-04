@@ -63,7 +63,6 @@ const SubmitBtn = styled.button`
   margin-top: 20px;
 `;
 
-/*eslint-disable*/
 const Posting = ({userInfo, history, edit, postingId}) => {
     const [postingInfo, setPostingInfo] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -109,8 +108,8 @@ const Posting = ({userInfo, history, edit, postingId}) => {
                 },
                 data: formData,
             })
-              .then(() => history.push('/'))
-              .catch(err => err);
+                .then(() => history.push('/'))
+                .catch(err => err);
         }
     });
 
@@ -122,7 +121,6 @@ const Posting = ({userInfo, history, edit, postingId}) => {
         const url = !edit ?
             `${process.env.REACT_APP_SERVER_ORIGIN}/letters/categories` :
             `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/posting/${postingId}`;
-        console.log(url);
         Api({
             method: 'get',
             url: `${url}`,
@@ -130,34 +128,33 @@ const Posting = ({userInfo, history, edit, postingId}) => {
                 'Authorization': `Bearer ${userInfo.accessToken}`,
             }
         })
-          .then(({data: {data}}) => {
-            if(!edit) {
-                setPostingInfo(data)
-            }
-            else {
-                const {categories,
-                    posting: {
-                        main_category: mainCategory,
-                        main_posting: mainPosting,
-                        ...posting
-                    },
-                    ...restData} = data;
-                const categoriesToJson = JSON.parse(categories);
-                formik.values.category = mainCategory;
-                formik.values.title = posting.title;
-                formik.values.posting = mainPosting;
-                setEditPostingInfo({
-                    categories: categoriesToJson,
-                    mainCategory,
-                    posting,
-                    ...restData
-                });
-            }
-          })
-          .catch(err => err);
+            .then(({data: {data}}) => {
+                if(!edit) {
+                    setPostingInfo(data)
+                }
+                else {
+                    const {categories,
+                        posting: {
+                            main_category: mainCategory,
+                            main_posting: mainPosting,
+                            ...posting
+                        },
+                        ...restData} = data;
+                    const categoriesToJson = JSON.parse(categories);
+                    formik.values.category = mainCategory;
+                    formik.values.title = posting.title;
+                    formik.values.posting = mainPosting;
+                    setEditPostingInfo({
+                        categories: categoriesToJson,
+                        mainCategory,
+                        posting,
+                        ...restData
+                    });
+                }
+            })
+            .catch(err => err);
         setLoading(false);
     }, []);
-    console.log(editPostingInfo);
 
     const handleChange = (event) => {
         const {target: {name, value}} = event;
@@ -177,7 +174,6 @@ const Posting = ({userInfo, history, edit, postingId}) => {
                 return;
             }
             case 'tag': {
-                console.log(value);
                 if(formik.values.tags.includes(value)) {
                     formik.values.tags = formik.values.tags.filter((tag) => tag !== value);
                 }
@@ -254,7 +250,6 @@ const Posting = ({userInfo, history, edit, postingId}) => {
                             .filter(({main_category: mainCategory}) => mainCategory === formik.values.category)
                             .map(({main_category: category, value}) => (
                                 value.map((v) => {
-                                    console.log(editPostingInfo.selectedTags.includes(v));
                                     if(category !== '도서' || (category === '도서' && v !== '도서 추천')) {
                                         return (
                                             <label key={v} onChange={handleChange}>
@@ -268,6 +263,7 @@ const Posting = ({userInfo, history, edit, postingId}) => {
                                             </label>
                                         );
                                     }
+                                    return null;
                                 })
                             ))
                     }

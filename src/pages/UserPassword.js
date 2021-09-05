@@ -14,6 +14,7 @@ const SubmitBtn = styled.button`
 const UserPassword = () => {
 
     const [currFocused, setCurrFocused] = useState('');
+    const [newPasswd, setNewPasswd] = useState('');
 
     const formik = useFormik({
         initialValues: {
@@ -30,12 +31,17 @@ const UserPassword = () => {
                 .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
             verifyPassword: Yup.string()
                 .required('새로운 비밀번호를 입력해 주세요')
-                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다'),
+                .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]{8,}$/, '비밀번호는 8자이상, 영어, 숫자, 특수문자가 하나 이상 포함되야 합니다')
+                .oneOf([`${newPasswd}`], '비밀번호가 일치하지 않습니다')
         }),
         onSubmit: () => {}
     });
 
     const handleChange = (event) => {
+        const {target: {name, value}} = event;
+        if(name === 'prevPassword') {
+            setNewPasswd(value);
+        }
         formik.handleChange(event);
     }
 
@@ -43,6 +49,11 @@ const UserPassword = () => {
         const {target: {name}} = event;
         setCurrFocused(name);
         formik.handleBlur(event);
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        formik.handleSubmit();
     }
 
     return (
@@ -79,7 +90,9 @@ const UserPassword = () => {
                 {formik.touched.verifyPassword && formik.errors.verifyPassword &&
                 currFocused === 'verifyPassword' && <div>{formik.errors.verifyPassword}</div>
                 }
-                <SubmitBtn>비밀번호 변경</SubmitBtn>
+                <SubmitBtn type='submit' onClick={handleSubmit}>
+                    비밀번호 변경
+                </SubmitBtn>
             </>
         </Auth>
     );

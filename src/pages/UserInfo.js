@@ -1,5 +1,6 @@
 import {useFormik} from 'formik';
 import {useEffect, useState} from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import * as Yup from 'yup';
 
@@ -23,7 +24,9 @@ const ChangeProfileBtn = styled.button`
 const UserInfo = () => {
     const [userProfile, setUserProfile] = useState({});
     const [loading, setLoading] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
     const [userInfo] = useState(getUserInfo());
+    const history = useHistory();
 
     useEffect(() => {
         setLoading(true);
@@ -43,14 +46,38 @@ const UserInfo = () => {
 
     const formik = useFormik({
         initialValues: {
-            name: '',
-            email: '',
+            name: ``,
+            email: ``,
+            profileImage: '',
         },
         validationSchema: Yup.object({
             email: Yup.string()
                 .matches(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i, {message: '이메일 형식이 틀렸습니다'}),
         }),
-        onSubmit: () => {},
+        onSubmit: ({name, email, profileImage}) => {
+            const formData = new FormData();
+            formData.append('name', name);
+            formData.append('email', email);
+            if(profileImage) {
+                formData.append('profileImage', profileImage, profileImage.name);
+            }
+            Api({
+                method: 'put',
+                url: `${process.env.REACT_APP_SERVER_ORIGIN}/user/${userInfo.userId}/profile`,
+                headers: {
+                    'Authorization': `Bearer ${userInfo.accessToken}`,
+                },
+                data: formData,
+            })
+                .then(() => history.push('/'))
+                .catch(err => {
+                    console.log(err);
+                    if(err.response.status === 400) {
+                        const {response: {data: {errors: [message]}}} = err;
+                        setErrorMessage(message.message);
+                    }
+                })
+        },
     })
 
     if(loading) {
@@ -58,11 +85,22 @@ const UserInfo = () => {
     }
 
     const handleChange = (event) => {
+        const {target: {name}} = event;
+        if(name === 'profileImage') {
+            const {currentTarget: {files}} = event;
+            formik.values.profileImage = files[0];
+            return;
+        }
         formik.handleChange(event);
     }
 
     const handleBlur = (event) => {
         formik.handleBlur(event);
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        formik.handleSubmit(event);
     }
 
     return (
@@ -74,6 +112,8 @@ const UserInfo = () => {
                         type='file'
                         accept='image/png, image/jpg'
                         id='profile-img'
+                        name='profileImage'
+                        onChange={handleChange}
                     />
                 </ProfileImgLabel>
                 <AuthInput
@@ -93,7 +133,10 @@ const UserInfo = () => {
                 {formik.touched.email && formik.errors.email ?
                     <div>{formik.errors.email}</div> : null
                 }
-                <ChangeProfileBtn>Change profile</ChangeProfileBtn>
+                <ChangeProfileBtn type='submit' onClick={handleSubmit}>
+                    Change profile
+                </ChangeProfileBtn>
+                {errorMessage && <div>{errorMessage}</div>}
             </>
         </Auth>
     );

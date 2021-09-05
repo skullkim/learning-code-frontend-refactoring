@@ -7,8 +7,7 @@ const EditPosting = () => {
     const history = useHistory();
     const userInfo = getUserInfo();
     const {postingId} = useParams();
-    /*eslint-disable*/
-    console.log(postingId);
+
     return (
         <Posting
             history={history}

@@ -77,11 +77,7 @@ const Signin = ({saveUserInfo}) => {
         formik.handleBlur(event);
     }, []);
 
-    /*eslint-disable*/
-    console.log(
-        'local',
-        JSON.parse(localStorage.getItem('userInfo'))
-    );
+
     return (
         <Auth>
             <>

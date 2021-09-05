@@ -1,5 +1,7 @@
+import {useFormik} from 'formik';
 import {useEffect, useState} from 'react';
 import styled from 'styled-components';
+import * as Yup from 'yup';
 
 import Auth, {AuthInput} from '../components/Auth';
 import Api from '../lib/customAxios';
@@ -39,8 +41,28 @@ const UserInfo = () => {
             .catch(err => err);
     }, []);
 
+    const formik = useFormik({
+        initialValues: {
+            name: '',
+            email: '',
+        },
+        validationSchema: Yup.object({
+            email: Yup.string()
+                .matches(/[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i, {message: '이메일 형식이 틀렸습니다'}),
+        }),
+        onSubmit: () => {},
+    })
+
     if(loading) {
         return <div>loading...</div>
+    }
+
+    const handleChange = (event) => {
+        formik.handleChange(event);
+    }
+
+    const handleBlur = (event) => {
+        formik.handleBlur(event);
     }
 
     return (
@@ -57,13 +79,20 @@ const UserInfo = () => {
                 <AuthInput
                     type='text'
                     name='name'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder= {`${userProfile.name || 'name'}`}
                 />
                 <AuthInput
                     type='text'
                     name='email'
+                    onChange={handleChange}
+                    onBlur={handleBlur}
                     placeholder={`${userProfile.email || 'email'}`}
                 />
+                {formik.touched.email && formik.errors.email ?
+                    <div>{formik.errors.email}</div> : null
+                }
                 <ChangeProfileBtn>Change profile</ChangeProfileBtn>
             </>
         </Auth>

@@ -171,7 +171,7 @@ const Profile = () => {
                     <ProfileInfo>
                         <UserName>p</UserName>
                         <EditProfile to={`/user/${userInfo.userId}/my-info`}>Edit profile</EditProfile>
-                        <EditProfile to='#'>change password</EditProfile>
+                        <EditProfile to={`/user/${userInfo.userId}/password`}>change password</EditProfile>
                     </ProfileInfo>
                 </ProfileBox>
             }

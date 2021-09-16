@@ -29,7 +29,7 @@ const Image = styled.img`
 const Main = () => {
     const [imageUrls, setImageUrls] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:8080/main-page-images')
+        axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/main-page-images`)
             .then(({data: {data}}) => setImageUrls(data))
             .catch(err => err);
     }, []);
@@ -40,7 +40,7 @@ const Main = () => {
                 <ImageBox>
                     {imageUrls && imageUrls.map(({img_url: img}) => (
                         <Image
-                            src={`${process.env.REACT_APP_SERVER_ORIGIN + img}`}
+                            src={`${process.env.REACT_APP_SERVER_ORIGIN}/${img}`}
                             alt="main page image"
                             key={img}
                         />

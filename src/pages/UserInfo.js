@@ -20,7 +20,6 @@ const ChangeProfileBtn = styled.button`
   margin-top: 15px
 `;
 
-/*eslint-disable*/
 const UserInfo = () => {
     const [userProfile, setUserProfile] = useState({});
     const [loading, setLoading] = useState(false);
@@ -71,7 +70,6 @@ const UserInfo = () => {
             })
                 .then(() => history.push('/'))
                 .catch(err => {
-                    console.log(err);
                     if(err.response.status === 400) {
                         const {response: {data: {errors: [message]}}} = err;
                         setErrorMessage(message.message);
@@ -87,8 +85,8 @@ const UserInfo = () => {
     const handleChange = (event) => {
         const {target: {name}} = event;
         if(name === 'profileImage') {
-            const {currentTarget: {files}} = event;
-            formik.values.profileImage = files[0];
+            const {currentTarget: {files: [image]}} = event;
+            formik.values.profileImage = image;
             return;
         }
         formik.handleChange(event);

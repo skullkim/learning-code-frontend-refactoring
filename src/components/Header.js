@@ -83,9 +83,6 @@ const Header = ({userInfo, setUserInfo}) => {
         category: '',
         target: '',
     });
-    // const [userInfo, setUserInfo] = useState(getUserInfo());
-    /*eslint-disable*/
-    console.log(userInfo);
     const history = useHistory();
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER_ORIGIN}/header`)
@@ -184,8 +181,8 @@ const Header = ({userInfo, setUserInfo}) => {
 }
 
 Header.propTypes = {
-    userInfo: PropTypes.objectOf(PropTypes.string),
-    setUserInfo: PropTypes.func,
+    userInfo: PropTypes.objectOf(PropTypes.string).isRequired,
+    setUserInfo: PropTypes.func.isRequired,
 };
 
 export default Header;

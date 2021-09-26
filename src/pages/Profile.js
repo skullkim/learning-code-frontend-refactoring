@@ -1,10 +1,9 @@
-/*eslint-disable*/
 import {useEffect, useState} from 'react';
 import {Link} from 'react-router-dom';
 import styled from 'styled-components';
 
-import Api from "../lib/customAxios";
 import EditComment from '../components/modal/EditComment';
+import Api from "../lib/customAxios";
 import getUserInfo from "../lib/getUserInfo";
 
 const MainBox = styled.main`
@@ -151,11 +150,11 @@ const Profile = () => {
                         'Authorization': `Bearer ${userInfo.accessToken}`,
                     }
                 })
-                  .then(() => setReloading(!reLoading))
-                  .catch(err => err);
+                    .then(() => setReloading(!reLoading))
+                    .catch(err => err);
                 break;
             case 'editComment':
-                setCommentId(id + '');
+                setCommentId(`${id  }`);
                 break;
             default:
                 throw new Error();
@@ -187,8 +186,8 @@ const Profile = () => {
                                 <Category>{mainCategory}</Category>
                                 <Link to={`/user/${userInfo.userId}/posting/${id}`}>수정</Link>
                                 <RemoveBtn
-                                  name='removePosting'
-                                  onClick={(event) => handleClick(event, id)}
+                                    name='removePosting'
+                                    onClick={(event) => handleClick(event, id)}
                                 >
                                     삭제
                                 </RemoveBtn>
@@ -204,14 +203,14 @@ const Profile = () => {
                         <Comment key={id}>
                             <CommentContext value={comment ?? ''} readOnly/>
                             <CommentBtn
-                              name='editComment'
-                              onClick={(event) => handleClick(event, id)}
+                                name='editComment'
+                                onClick={(event) => handleClick(event, id)}
                             >
                                 수정
                             </CommentBtn>
                             <CommentBtn
-                              name='deleteComment'
-                              onClick={(event) => handleClick(event, id)}
+                                name='deleteComment'
+                                onClick={(event) => handleClick(event, id)}
                             >
                                 삭제
                             </CommentBtn>

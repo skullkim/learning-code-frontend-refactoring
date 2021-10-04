@@ -172,7 +172,7 @@ const Header = ({userInfo, setUserInfo}) => {
                 </NavBox> :
                 <NavBox>
                     <NavLink to={`/user/${userInfo.userId}/posting`}>posting</NavLink>
-                    <NavLink to={`/user/${userInfo.id}/profile`}>profile</NavLink>
+                    <NavLink to={`/user/${userInfo.userId}/profile`}>profile</NavLink>
                     <NavLink to='#' onClick={handleLogout}>logout</NavLink>
                 </NavBox>
             }
